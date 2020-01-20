@@ -1,17 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors')
 
-var usersRouter = require('./routes/users');
-var postsRouter = require('./routes/posts');
-var eventsRouter = require('./routes/events');
-var groupsRouter = require('./routes/groups');
+const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
+const eventsRouter = require('./routes/events');
+const groupsRouter = require('./routes/groups');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
