@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const ucs = require('ucs');
-const posts = require('posts');
+const ucs = require('./ucs');
+const posts = require('./posts');
 
 const usersSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,

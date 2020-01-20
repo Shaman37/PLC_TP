@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
-const users = require('users');
-const ucs = require('ucs');
-const posts = require('posts');
+const users = require('./users');
+const ucs = require('./ucs');
+const posts = require('./posts');
 
 const eventsSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    author: users.Schema._id,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'},
     name: String,
     description: String,
     date: String,
@@ -13,8 +15,12 @@ const eventsSchema = new mongoose.Schema({
     local: String,
     category: String,
     photo: [String],
-    feed: [posts.Schema._id],
-    uc: {type: ucs.Schema._id, required: false}
+    feed: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'posts'}],
+    uc: {type: mongoose.Schema.Types.ObjectId,
+         ref: 'ucs',
+         required: false}
 });
 
 module.exports = mongoose.model('events', eventsSchema);
