@@ -48,4 +48,16 @@ module.exports.userFeed = (id) => {
     return User
         .findOne({_id: id }, {feed:1})
         .exec()
+
+}
+
+
+module.exports.userbyEmail = (email)  => {
+    return User
+        .findOne({email: email})
+        .exec()
+}
+
+module.exports.insert = user => {
+    return User.create(user)
 }
