@@ -59,3 +59,5 @@ router.get('/:eventId/uc', verifyToken, function (req, res, next) {
         .then(data => res.jsonp(data))
         .catch(error => res.status(500).jsonp(error))
 })
+
+module.exports = router

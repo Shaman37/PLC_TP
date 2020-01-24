@@ -8,6 +8,7 @@ const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const eventsRouter = require('./routes/events');
 const groupsRouter = require('./routes/groups');
+const ucsRouter = require('./routes/ucs');
 
 var mongoose = require('mongoose')
 
@@ -28,8 +29,9 @@ app.use(cookieParser());
 
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
-//app.use('/api/events', eventsRouter);
+app.use('/api/events', eventsRouter);
 app.use('/api/groups', groupsRouter);
+app.use('/api/ucs', ucsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
