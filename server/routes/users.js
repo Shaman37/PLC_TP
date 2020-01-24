@@ -34,5 +34,27 @@ router.get('/:userId', function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user friends */
+router.get('/:userId/friends', function (req, res, next) {
+  User.userFriends(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* GET user Ucs */
+router.get('/:userId/ucs', function (req, res, next) {
+  User.userUcs(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* GET user feed */
+router.get('/:userId/feed', function (req, res, next) {
+  User.userFeed(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
 
 module.exports = router;

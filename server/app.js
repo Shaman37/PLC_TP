@@ -27,9 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/users', usersRouter);
-//app.use('/api/posts', postsRouter);
+app.use('/api/posts', postsRouter);
 //app.use('/api/events', eventsRouter);
-//app.use('/api/groups', groupsRouter);
+app.use('/api/groups', groupsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

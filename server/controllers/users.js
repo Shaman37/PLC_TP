@@ -30,3 +30,22 @@ module.exports.userbyId = (id)  => {
         .exec()
 }
 
+
+module.exports.userFriends = (id) => {
+    return User
+        .findOne({_id: id }, {friends:1})
+        .exec()
+}
+
+module.exports.userUcs = (id) => {
+    return User
+        .findOne({_id: id }, {ucs:1})
+        .exec()
+}
+
+
+module.exports.userFeed = (id) => {
+    return User
+        .findOne({_id: id }, {feed:1})
+        .exec()
+}

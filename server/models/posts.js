@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const user = require('./users');
 
 const postsSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -13,6 +12,12 @@ const postsSchema = new mongoose.Schema({
     date: String
 });
 
-postsSchema.add({comments: [postsSchema]})
+postsSchema.add({comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'posts'
+}]})
 
 module.exports = mongoose.model('posts', postsSchema);
+
+
+ 
