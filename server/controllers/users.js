@@ -30,3 +30,12 @@ module.exports.userbyId = (id)  => {
         .exec()
 }
 
+module.exports.userbyEmail = (email)  => {
+    return User
+        .findOne({email: email})
+        .exec()
+}
+
+module.exports.insert = user => {
+    return User.create(user)
+}
