@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const users = require('./users');
-const ucs = require('./ucs');
-const posts = require('./posts');
+
 
 const eventsSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
