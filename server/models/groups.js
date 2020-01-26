@@ -18,7 +18,11 @@ const groupsSchema = new mongoose.Schema({
         ref: 'events'}],
     feed: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'posts'}]
+        ref: 'posts'}],
+    pending:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users' 
+        }]
 });
 
 module.exports = mongoose.model('groups', groupsSchema);

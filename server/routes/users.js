@@ -146,6 +146,13 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user available posts */
+router.get('/:userId/posts', function (req, res, next) {
+  User.userPosts(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
 
 
 module.exports = router;

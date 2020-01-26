@@ -22,6 +22,10 @@ const usersSchema = new mongoose.Schema({
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
+    }],
+    pending:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users' 
     }]
 });
 

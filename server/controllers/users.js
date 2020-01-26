@@ -1,4 +1,6 @@
 var User = require('../models/users')
+var mongoose = require('mongoose')
+
 
 module.exports.list = () => {
     return User
@@ -61,3 +63,12 @@ module.exports.userbyEmail = (email)  => {
 module.exports.insert = user => {
     return User.create(user)
 }
+
+
+/*
+module.exports.userPosts = (id) => {
+    return User.aggregate([{$match: {_id: new mongoose.Types.ObjectId(id)}}, {$unwind: "$friends" },
+                         {$lookup: {from: 'users', localField: 'friends', foreignField: '_id', as: 'posts' }},
+                        {$unwind: "$posts"}])
+}
+*/
