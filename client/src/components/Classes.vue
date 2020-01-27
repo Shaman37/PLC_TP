@@ -50,29 +50,46 @@
                 </v-toolbar>
             </v-col>
         </v-row>
-        
-         <v-tabs-items v-model="tab2">
-          <v-tab-item value="sem1">
-        
-        <v-list two-line subheader class="mt-12">
-            <v-list-item v-for="(item, i) in ucs[year].sem_1" :key="i">
-                <v-card>{{item}}</v-card>
-            </v-list-item>
     
-        </v-list>
-        </v-tab-item>
-
-         <v-tab-item value="sem2">
-        
-        <v-list two-line subheader class="mt-12">
-            <v-list-item v-for="(item, i) in ucs[year].sem_2" :key="i">
-                <v-card>{{item}}</v-card>
-            </v-list-item>
+        <v-tabs-items v-model="tab2">
+            <v-tab-item value="sem1">
     
-        </v-list>
-        </v-tab-item>
+                <v-list two-line subheader>
+                <v-card width="100%" v-for="(item, i) in ucs[year].sem_1" :key="i">
+                    <v-list-item :class="colors[i]">
+                    <v-list-item-content>
+                    <v-list-item-title>
+                        {{item.title}}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{item.subtitle}}
+                    </v-list-item-subtitle>
+                    </v-list-item-content>
+                    </v-list-item>
+                    </v-card>
+    
+                </v-list>
+            </v-tab-item>
+    
+            <v-tab-item value="sem2">
+    
+                <v-list two-line subheader class="mt-12">
+                    <v-card width="100%" v-for="(item, i) in ucs[year].sem_2" :key="i">
+                    <v-list-item :class="colors[i]">
+                    <v-list-item-content>
+                    <v-list-item-title>
+                        {{item.title}}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{item.subtitle}}
+                    </v-list-item-subtitle>
+                    </v-list-item-content>
+                    </v-list-item>
+                    </v-card>
+                </v-list>
+            </v-tab-item>
         </v-tabs-items>
-        
+    
     </v-container>
 </template>
 
@@ -85,10 +102,12 @@
                 sem: 1,
                 tab: null,
                 tab2: null,
+                colors: ["uc_1", "uc_2", "uc_3", "uc_4", "uc_5", "uc_6"],
                 ucs: {
                     1: {
-                        sem_1: ["1", "2"],
-                        sem_2: ["3", "4"]
+                        sem_1: [{title: "PRI", subtitle: "Processamento e Representação de Informação"},
+                                {title: "GCS", subtitle: "Gramáticas na Compreensão de Software"}],
+                        sem_2: [{title: "PRC", subtitle: "Processamento e Representação de Conhecimento"}]
                     },
                     2: {
                         sem_1: ["5", "6"],
