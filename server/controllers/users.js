@@ -82,8 +82,26 @@ module.exports.addToFeed = (id_user,id_post) => {
             .exec()
 }
 
+
+module.exports.request = (id_user,id_request) =>{
+    return User
+            .findOneAndUpdate({_id: id_user}, {$push : {pending: id_request}},{new: true, useFindAndModify: false})
+}
+
+module.exports.friendAccept = (id_user,id_request) =>{
+    return User
+            .findOneAndUpdate({_id: id_user}, {$pull : {pending: id_request}, $push: {friends: id_request}  },{new: true, useFindAndModify: false})
+}
+
+module.exports.friends = (id_user,id_request) =>{
+    return User
+            .findOneAndUpdate({_id: id_user}, {$push: {friends: id_request}  },{new: true, useFindAndModify: false})
+}
+
+
 module.exports.remove = id => {
     return User
         .deleteOne({_id: id})
         .exec()
 }
+
