@@ -92,7 +92,6 @@ router.post('/', (req, res) => {
         }
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(user.password, salt, (err, hash) => {
-            user._id = mongoose.Types.ObjectId()
             user.password = hash
             user.b_date = ''
             user.biography = ''
@@ -155,16 +154,35 @@ router.get('/:userId/posts', function (req, res, next) {
 
 /* PATCH user */
 router.patch('/:idUser', function (req, res) {
-  User.update(req.params.idUser,req.body)
-      .then(data => res.jsonp(data))
-      .catch(error => res.status(500).jsonp(error))
+  User.update(req.params.idUser, req.body)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE user */
 router.delete('/:idUser', function (req, res) {
   User.remove(req.params.idUser)
-      .then(data => res.jsonp(data))
-      .catch(error => res.status(500).jsonp(error))
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
 })
+
+
+/* POST user friend request */
+router.post('/:idUser/request', function (req, res) {
+  User.request(req.params.idUser, req.body)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* POST user accept friend request */
+router.post('/:idUser/friends', function (req, res) {
+  User.friendAccept(req.params.idUser, req.body._id)
+    .then(data => User.friends(req.body._id,req.params.idUser)
+      .then(user => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
 
 module.exports = router;
