@@ -37,7 +37,7 @@ router.get('/', verifyToken, function (req, res, next) {
 });
 
 
-// Post Login
+// POST Login
 router.post('/login', (req, res) => {
   User.userbyEmail(req.body.email)
     .then(user => {
@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
 });
 
 
-// Post Register
+// POST user
 router.post('/', (req, res) => {
   const { name, email, password, b_date, biography, course, year, ucs, feed, friends } = req.body
 
@@ -153,6 +153,18 @@ router.get('/:userId/posts', function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* PATCH user */
+router.patch('/:idUser', function (req, res) {
+  User.update(req.params.idUser,req.body)
+      .then(dados => res.jsonp(dados))
+      .catch(erro => res.status(500).jsonp(erro))
+})
 
+/* DELETE user */
+router.delete('/:idUser', function (req, res) {
+  User.remove(req.params.idUser)
+      .then(dados => res.jsonp(dados))
+      .catch(erro => res.status(500).jsonp(erro))
+})
 
 module.exports = router;

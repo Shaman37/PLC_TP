@@ -60,4 +60,25 @@ router.get('/:eventId/uc', verifyToken, function (req, res, next) {
         .catch(error => res.status(500).jsonp(error))
 })
 
+/* POST events */
+router.post('/', verifyToken, function (req, res) {
+    Event.insert(req.body)
+        .then(dados => res.jsonp(dados))
+        .catch(erro => res.status(500).jsonp(erro))
+})
+
+/* PATCH event */
+router.patch('/:idEvent', function (req, res) {
+    Event.update(req.params.idEvent,req.body)
+        .then(dados => res.jsonp(dados))
+        .catch(erro => res.status(500).jsonp(erro))
+  })
+
+/* DELETE events */
+router.delete('/:idEvent', verifyToken, function (req, res) {
+    Event.remove(req.params.idEvent)
+        .then(dados => res.jsonp(dados))
+        .catch(erro => res.status(500).jsonp(erro))
+})
+
 module.exports = router

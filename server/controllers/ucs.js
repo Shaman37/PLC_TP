@@ -36,3 +36,19 @@ module.exports.ucClass = (id) => {
         .findOne({ _id: id },{class: 1})
         .exec()
 }
+
+module.exports.insert = uc => {
+    return Uc.create(uc)
+}
+
+module.exports.update = (id, data) => {
+    return Uc
+        .findOneAndUpdate({ _id: id }, data, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.remove = id => {
+    return Uc
+        .deleteOne({_id: id})
+        .exec()
+}

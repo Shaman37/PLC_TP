@@ -55,3 +55,20 @@ module.exports.postComments = (id) => {
         .findOne({ _id: id }, { comments: 1 })
         .exec()
 }
+
+module.exports.insert = post => {
+    post.date = new Date().toISOString()
+    return Post.create(post)
+}
+
+module.exports.update = (id, data) => {
+    return Post
+        .findOneAndUpdate({ _id: id }, data, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.remove = id => {
+    return Post
+        .deleteOne({_id: id})
+        .exec()
+}

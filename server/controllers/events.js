@@ -50,3 +50,19 @@ module.exports.eventFeed = (id) => {
         .findOne({ _id: id },{feed: 1})
         .exec()
 }
+
+module.exports.insert = event => {
+    return Event.create(event)
+}
+
+module.exports.update = (id,data) => {
+    return Event
+        .findOneAndUpdate({_id : id}, data, {new: true, useFindAndModify: false})
+        .exec()
+}
+
+module.exports.remove = id => {
+    return Event
+        .deleteOne({_id: id})
+        .exec()
+}

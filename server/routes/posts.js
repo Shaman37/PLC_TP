@@ -53,6 +53,26 @@ router.get('/:postId/comments', verifyToken  ,function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* POST posts */
+router.post('/', verifyToken, function (req, res) {
+  Post.insert(req.body)
+      .then(dados => res.jsonp(dados))
+      .catch(erro => res.status(500).jsonp(erro))
+})
+
+/* PATCH posts */
+router.patch('/:idPost', function (req, res) {
+  Post.update(req.params.idPost, req.body)
+    .then(dados => res.jsonp(dados))
+    .catch(erro => res.status(500).jsonp(erro))
+})
+
+/* DELETE posts */
+router.delete('/:idPost', function (req, res) {
+  Post.remove(req.params.idPost)
+      .then(dados => res.jsonp(dados))
+      .catch(erro => res.status(500).jsonp(erro))
+})
 
 
 module.exports = router;

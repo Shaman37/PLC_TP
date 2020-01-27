@@ -3,7 +3,6 @@ const ucs = require('./ucs');
 const posts = require('./posts');
 
 const usersSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     email: String,
     password: String,
@@ -27,6 +26,9 @@ const usersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users' 
     }]
+},
+{
+    toJSON: { versionKey: false }
 });
 
 module.exports = mongoose.model('users', usersSchema);

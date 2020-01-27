@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 
 module.exports.list = () => {
     return User
-        .find()
+        .find({},{password: 0, pending: 0})
         .exec()
 }
 
@@ -64,6 +64,11 @@ module.exports.insert = user => {
     return User.create(user)
 }
 
+module.exports.update = (id,data) => {
+    return User
+        .findOneAndUpdate({_id : id}, data, {new: true, useFindAndModify: false})
+        .exec()
+}
 
 /*
 module.exports.userPosts = (id) => {
@@ -72,3 +77,9 @@ module.exports.userPosts = (id) => {
                         {$unwind: "$posts"}])
 }
 */
+
+module.exports.remove = id => {
+    return User
+        .deleteOne({_id: id})
+        .exec()
+}

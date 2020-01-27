@@ -1,28 +1,31 @@
 const mongoose = require('mongoose');
-const users = require('./users');
-const events = require('./events');
-const posts = require('./posts');
 
 const groupsSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     description: String,
     admin: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'}],
+        ref: 'users'
+    }],
     members: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'}],
+        ref: 'users'
+    }],
     events: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'events'}],
+        ref: 'events'
+    }],
     feed: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'posts'}],
-    pending:[{
+        ref: 'posts'
+    }],
+    pending: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users' 
-        }]
-});
+        ref: 'users'
+    }]
+},
+    {
+        toJSON: { versionKey: false }
+    });
 
 module.exports = mongoose.model('groups', groupsSchema);
