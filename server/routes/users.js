@@ -148,7 +148,14 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
 /* GET user available posts */
 router.get('/:userId/posts', function (req, res, next) {
   User.friendsPosts(req.params.userId)
-    .then(data => res.jsonp(data))
+    .then(posts => User.userFeed(req.params.userId)
+      .then(data => {
+        posts[0].feed.concat(data.feed)   
+        posts[0].feed.sort(function(p1,p2){
+          return new Date(p1.date) - new Date(p2.date);
+        })
+        res.jsonp(posts)})
+      .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -178,7 +185,7 @@ router.post('/:idUser/request', function (req, res) {
 /* POST user accept friend request */
 router.post('/:idUser/friends', function (req, res) {
   User.friendAccept(req.params.idUser, req.body._id)
-    .then(data => User.friends(req.body._id,req.params.idUser)
+    .then(data => User.friends(req.body._id, req.params.idUser)
       .then(user => res.jsonp(data))
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
