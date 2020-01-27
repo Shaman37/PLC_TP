@@ -52,6 +52,12 @@ module.exports.update = (id, data) => {
         .exec()
 }
 
+module.exports.addToFeed = (id_group,id_post) => {
+    return Group
+            .findOneAndUpdate({_id: id_group}, {$push : {feed: id_post}},{new: true, useFindAndModify: false})
+            .exec()
+}
+
 module.exports.remove = id => {
     return Group
         .deleteOne({ _id: id })

@@ -15,7 +15,7 @@ module.exports.listbyCategory = (category) => {
 
 module.exports.listbyName = (name) => {
     return Event
-        .find({name: {$regex: ".*" + name + ".*" }})
+        .find({ name: { $regex: ".*" + name + ".*" } })
         .exec()
 }
 
@@ -47,7 +47,7 @@ module.exports.eventAuthor = (id) => {
 
 module.exports.eventFeed = (id) => {
     return Event
-        .findOne({ _id: id },{feed: 1})
+        .findOne({ _id: id }, { feed: 1 })
         .exec()
 }
 
@@ -55,14 +55,20 @@ module.exports.insert = event => {
     return Event.create(event)
 }
 
-module.exports.update = (id,data) => {
+module.exports.update = (id, data) => {
     return Event
-        .findOneAndUpdate({_id : id}, data, {new: true, useFindAndModify: false})
+        .findOneAndUpdate({ _id: id }, data, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.addToFeed = (id_event, id_post) => {
+    return Event
+        .findOneAndUpdate({ _id: id_event }, { $push: { feed: id_post } }, { new: true, useFindAndModify: false })
         .exec()
 }
 
 module.exports.remove = id => {
     return Event
-        .deleteOne({_id: id})
+        .deleteOne({ _id: id })
         .exec()
 }

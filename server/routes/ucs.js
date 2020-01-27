@@ -46,22 +46,22 @@ router.get('/:ucId/class', verifyToken, function (req, res, next) {
 /* POST ucs */
 router.post('/', function (req, res) {
     Uc.insert(req.body)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).jsonp(erro))
+        .then(data => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error))
 })
 
 /* PATCH uc */
 router.patch('/:idUc', function (req, res) {
     Uc.update(req.params.idUc, req.body)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).jsonp(erro))
+        .then(data => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE ucs */
 router.delete('/:idUc', function (req, res) {
     Uc.remove(req.params.idUc)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).jsonp(erro))
+        .then(data => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error))
 })
 
 

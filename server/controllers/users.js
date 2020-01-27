@@ -1,6 +1,4 @@
 var User = require('../models/users')
-var mongoose = require('mongoose')
-
 
 module.exports.list = () => {
     return User
@@ -77,6 +75,12 @@ module.exports.userPosts = (id) => {
                         {$unwind: "$posts"}])
 }
 */
+
+module.exports.addToFeed = (id_user,id_post) => {
+    return User
+            .findOneAndUpdate({_id: id_user}, {$push : {feed: id_post}},{new: true, useFindAndModify: false})
+            .exec()
+}
 
 module.exports.remove = id => {
     return User

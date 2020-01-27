@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Post = require('../controllers/posts')
+var User = require('../controllers/users')
 
 const { verifyToken } = require('../middleware/check-auth')
-
 
 /* GET post listing. */
 router.get('/', verifyToken ,function (req, res, next) {
@@ -54,24 +54,26 @@ router.get('/:postId/comments', verifyToken  ,function (req, res, next) {
 })
 
 /* POST posts */
-router.post('/', verifyToken, function (req, res) {
-  Post.insert(req.body)
-      .then(dados => res.jsonp(dados))
-      .catch(erro => res.status(500).jsonp(erro))
+router.post('/', function (req, res) {
+  Post.insert(req.body) 
+      .then(data => User.addToFeed(data.author,data._id)
+                          .then(user => res.jsonp(data))
+                          .catch(error => res.status(500).jsonp(error)))
+      .catch(error => res.status(500).jsonp(error))
 })
 
 /* PATCH posts */
 router.patch('/:idPost', function (req, res) {
   Post.update(req.params.idPost, req.body)
-    .then(dados => res.jsonp(dados))
-    .catch(erro => res.status(500).jsonp(erro))
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE posts */
 router.delete('/:idPost', function (req, res) {
   Post.remove(req.params.idPost)
-      .then(dados => res.jsonp(dados))
-      .catch(erro => res.status(500).jsonp(erro))
+      .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error))
 })
 
 

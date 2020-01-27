@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../controllers/users')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 var mongoose = require('mongoose')
+var User = require('../controllers/users')
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -156,15 +156,15 @@ router.get('/:userId/posts', function (req, res, next) {
 /* PATCH user */
 router.patch('/:idUser', function (req, res) {
   User.update(req.params.idUser,req.body)
-      .then(dados => res.jsonp(dados))
-      .catch(erro => res.status(500).jsonp(erro))
+      .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE user */
 router.delete('/:idUser', function (req, res) {
   User.remove(req.params.idUser)
-      .then(dados => res.jsonp(dados))
-      .catch(erro => res.status(500).jsonp(erro))
+      .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error))
 })
 
 module.exports = router;
