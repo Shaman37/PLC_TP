@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Group = require('../controllers/groups')
 var Post = require('../controllers/posts')
+var Event = require('../controllers/events')
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -50,9 +51,9 @@ router.get('/:groupId/feed', verifyToken, function (req, res, next) {
 /* POST group feed */
 router.post('/:groupId/feed', function (req, res) {
   Post.insert(req.body)
-    .then(data => Group.addToFeed(req.params.groupId,data._id)
-                    .then(group => res.jsonp(data))
-                    .catch(error => res.status(500).jsonp(error)))
+    .then(data => Group.addToFeed(req.params.groupId, data._id)
+      .then(group => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -70,6 +71,37 @@ router.post('/', function (req, res) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+
+/* POST group event */
+router.post('/:groupId/events', function (req, res) {
+  Event.insert(req.body)
+    .then(event =>
+      
+      Group.insertEvent(req.params.groupId, event._id)
+        .then(data => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error))
+    )
+
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* POST request group access */
+router.post('/:groupId/pending', function (req, res) {
+  Group.addPending(req.params.groupId, req.body.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* POST add group member */
+router.post('/:groupId/members', function (req, res) {
+  Group.addMember(req.params.groupId, req.body.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
 /* PATCH event */
 router.patch('/:idGroup', function (req, res) {
   Group.update(req.params.idGroup, req.body)
@@ -83,5 +115,37 @@ router.delete('/:idGroup', function (req, res) {
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
+
+
+/* DELETE group post */
+router.delete('/:idGroup/feed', function (req, res) {
+  Group.removePost(req.params.idGroup, req.body.postId)
+    .then(data => Post.remove(req.body.postId)
+      .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* DELETE group event */
+router.delete('/:idGroup/events', function (req, res) {
+  Group.removeEvent(req.params.idGroup, req.body.eventId)
+    .then(event => {
+      Event.eventFeed(req.body.eventId)
+        .then(feed => {
+          for (f in feed)
+            Post.remove(f._id)
+
+
+          Event.remove(req.body.eventId)
+            .then(data => res.jsonp(data))
+            .catch(error => res.jsonp(error))
+        })
+        .catch(error => res.status(500).jsonp(error))
+
+    })
+    .catch(error => res.status(500).jsonp(error))
+})
+
 
 module.exports = router

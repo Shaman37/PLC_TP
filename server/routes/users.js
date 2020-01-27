@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 var mongoose = require('mongoose')
 var User = require('../controllers/users')
+var Group = require('../controllers/groups')
+var Post = require('../controllers/posts')
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -147,15 +149,37 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
 
 /* GET user available posts */
 router.get('/:userId/posts', function (req, res, next) {
+  var userPosts = { _id: "", feed: [] }
   User.friendsPosts(req.params.userId)
     .then(posts => User.userFeed(req.params.userId)
       .then(data => {
-        posts[0].feed.concat(data.feed)   
-        posts[0].feed.sort(function(p1,p2){
+
+        userPosts._id = posts[0]._id
+        userPosts.feed = posts[0].feed.concat(data.feed)
+
+        userPosts.feed.sort(function (p1, p2) {
           return new Date(p1.date) - new Date(p2.date);
         })
-        res.jsonp(posts)})
+        res.jsonp(userPosts)
+      })
       .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* GET user groups feed */
+router.get('/:userId/groups/feed', function (req, res, next) {
+  Group.userGroupsFeed(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+
+/* GET user groups */
+router.get('/:userId/groups', function (req, res, next) {
+  Group.userGroups(req.params.userId)
+    .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -165,14 +189,6 @@ router.patch('/:idUser', function (req, res) {
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
-
-/* DELETE user */
-router.delete('/:idUser', function (req, res) {
-  User.remove(req.params.idUser)
-    .then(data => res.jsonp(data))
-    .catch(error => res.status(500).jsonp(error))
-})
-
 
 /* POST user friend request */
 router.post('/:idUser/request', function (req, res) {
@@ -187,6 +203,22 @@ router.post('/:idUser/friends', function (req, res) {
   User.friendAccept(req.params.idUser, req.body._id)
     .then(data => User.friends(req.body._id, req.params.idUser)
       .then(user => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* DELETE user */
+router.delete('/:idUser', function (req, res) {
+  User.remove(req.params.idUser)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* DELETE user post */
+router.delete('/:idUser/feed', function (req, res) {
+  User.removePost(req.params.idUser, req.body.postId)
+    .then(data => Post.remove(req.body.postId)
+      .then(data => res.jsonp(data))
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })

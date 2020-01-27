@@ -46,20 +46,69 @@ module.exports.insert = group => {
     return Group.create(group)
 }
 
+module.exports.insertEvent = (id, eventId) => {
+    return Group
+        .findOneAndUpdate({ _id: id }, { $push: { events: eventId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
 module.exports.update = (id, data) => {
     return Group
         .findOneAndUpdate({ _id: id }, data, { new: true, useFindAndModify: false })
         .exec()
 }
 
-module.exports.addToFeed = (id_group,id_post) => {
+module.exports.addToFeed = (id_group, id_post) => {
     return Group
-            .findOneAndUpdate({_id: id_group}, {$push : {feed: id_post}},{new: true, useFindAndModify: false})
-            .exec()
+        .findOneAndUpdate({ _id: id_group }, { $push: { feed: id_post } }, { new: true, useFindAndModify: false })
+        .exec()
 }
+
+
+module.exports.addPending = (id_group, id_user) => {
+    return Group
+        .findOneAndUpdate({ _id: id_group }, { $push: { pending: id_user } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.addMember = (id_group, id_user) => {
+    return Group
+        .findOneAndUpdate({ _id: id_group }, { $pull: { pending: id_user }, $push: { members: id_user } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+
+module.exports.groupMembers = (id) => {
+    return Group
+        .findOne({ _id: id }, { members: 1 })
+        .exec()
+}
+
+
+
+
+module.exports.userGroups = (userId) => {
+    return Group
+        .find({ members: userId })
+        .exec()
+}
+
 
 module.exports.remove = id => {
     return Group
         .deleteOne({ _id: id })
+        .exec()
+}
+
+
+module.exports.removePost = (id, postId) => {
+    return Group
+        .findOneAndUpdate({ _id: id }, { $pull: { feed: postId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.removeEvent = (id, eventId) => {
+    return Group
+        .findOneAndUpdate({ _id: id }, { $pull: { events: eventId } }, { new: true, useFindAndModify: false })
         .exec()
 }
