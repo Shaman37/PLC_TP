@@ -6,7 +6,7 @@ var User = require('../controllers/users')
 const { verifyToken } = require('../middleware/check-auth')
 
 /* GET post listing. */
-router.get('/', verifyToken ,function (req, res, next) {
+router.get('/',function (req, res, next) {
   if (req.query.category && req.query.author){
     Post.listbyAuthorCat(req.query.author, req.query.category)
       .then(data => res.jsonp(data))

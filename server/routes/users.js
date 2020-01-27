@@ -147,7 +147,7 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
 
 /* GET user available posts */
 router.get('/:userId/posts', function (req, res, next) {
-  User.userPosts(req.params.userId)
+  User.friendsPosts(req.params.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })

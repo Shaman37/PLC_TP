@@ -1,4 +1,5 @@
 var User = require('../models/users')
+var mongoose = require('mongoose')
 
 module.exports.list = () => {
     return User
@@ -47,6 +48,7 @@ module.exports.userUcs = (id) => {
 module.exports.userFeed = (id) => {
     return User
         .findOne({_id: id }, {feed:1})
+        .populate("feed")
         .exec()
 
 }
@@ -68,13 +70,17 @@ module.exports.update = (id,data) => {
         .exec()
 }
 
-/*
-module.exports.userPosts = (id) => {
+
+module.exports.friendsPosts = (id) => {
     return User.aggregate([{$match: {_id: new mongoose.Types.ObjectId(id)}}, {$unwind: "$friends" },
                          {$lookup: {from: 'users', localField: 'friends', foreignField: '_id', as: 'posts' }},
-                        {$unwind: "$posts"}])
+                        {$unwind: "$posts"},{$unwind: "$posts.feed"},
+                        {$lookup: {from: 'posts', localField: 'posts.feed', foreignField: '_id', as: 'posts' }},
+                        {$unwind: "$posts"},
+                        {$group: {_id: "$_id", feed: {$push: "$posts"}}}])
+                        
 }
-*/
+
 
 module.exports.addToFeed = (id_user,id_post) => {
     return User
