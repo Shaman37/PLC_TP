@@ -76,7 +76,7 @@ router.post('/', function (req, res) {
 router.post('/:groupId/events', function (req, res) {
   Event.insert(req.body)
     .then(event =>
-      
+
       Group.insertEvent(req.params.groupId, event._id)
         .then(data => res.jsonp(data))
         .catch(error => res.status(500).jsonp(error))
@@ -111,9 +111,12 @@ router.patch('/:idGroup', function (req, res) {
 
 /* DELETE groups */
 router.delete('/:idGroup', function (req, res) {
-  Group.remove(req.params.idGroup)
-    .then(data => res.jsonp(data))
-    .catch(error => res.status(500).jsonp(error))
+  Group.groupbyId(req.params.idGroup)
+    .then(group => {
+
+
+
+    })
 })
 
 
@@ -130,20 +133,14 @@ router.delete('/:idGroup/feed', function (req, res) {
 /* DELETE group event */
 router.delete('/:idGroup/events', function (req, res) {
   Group.removeEvent(req.params.idGroup, req.body.eventId)
-    .then(event => {
-      Event.eventFeed(req.body.eventId)
-        .then(feed => {
-          for (f in feed)
-            Post.remove(f._id)
-
-
-          Event.remove(req.body.eventId)
-            .then(data => res.jsonp(data))
-            .catch(error => res.jsonp(error))
-        })
-        .catch(error => res.status(500).jsonp(error))
-
-    })
+    .then(event => Event.eventFeed(req.body.eventId)
+      .then(feed => {
+        Post.removeMany(feed.feed.map(x => x._id))
+        .then(posts => Event.remove(req.body.eventId)
+          .then(data => res.jsonp(data))
+          .catch(error => res.jsonp(error)))
+        .catch(error => res.jsonp(error))})
+      .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
 
