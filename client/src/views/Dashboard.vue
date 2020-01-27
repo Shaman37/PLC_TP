@@ -10,7 +10,7 @@
   <div>
     <v-card flat>
       <v-toolbar absolute width="99.9%">
-      <v-tabs v-model="tab" background-color="light-blue darken-2" centered fixed-tabs dark slider-color="primary">
+      <v-tabs v-model="tab" background-color="light-blue darken-2" centered grow dark slider-color="primary">
   
         <v-tabs-slider></v-tabs-slider>
   
@@ -52,7 +52,6 @@
             <Events/>
             </v-card>
           </v-tab-item>
-  
         </v-tabs-items>
       </v-tabs>
       </v-toolbar>

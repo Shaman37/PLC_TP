@@ -22,37 +22,41 @@
     
             <v-divider></v-divider>
             <v-divider class="mt-2"></v-divider>
-            
+    
             <v-list nav rounded class="mt-3">
-                
+    
                 <v-list-item link>
-                <v-list-item-icon>
-                    <v-icon>mdi-account-multiple</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                    <v-list-item-title>Friends</v-list-item-title>
-                </v-list-item-content>
-                
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-plus</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        Add Friend
+                    </v-list-item-content>
+    
                 </v-list-item>
+    
                 <v-divider inset></v-divider>
 
-<v-list-item link>
-                <v-list-item-icon>
-                    <v-icon>mdi-image</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                    Photo Album
-                </v-list-item-content>
-               
-    </v-list-item>
-     <v-divider inset></v-divider>
-                <v-list-item link>
-                <v-list-item-icon>
-                    <v-icon>mdi-folder</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                    My Projects
-                </v-list-item-content>
+                <v-list-item link router :to="'/friends'">
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-multiple</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Friend List</v-list-item-title>
+                    </v-list-item-content>
+    
+                </v-list-item>
+
+                <v-divider inset></v-divider>
+    
+                <v-list-item link router :to="'/album'">
+                    <v-list-item-icon>
+                        <v-icon>mdi-image</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        Photo Album
+                    </v-list-item-content>
+    
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>

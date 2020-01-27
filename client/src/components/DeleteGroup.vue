@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="text-center">
     <v-dialog v-model="dialog" width="750">
       <template v-slot:activator="{ on }">
             <v-btn
-              color="light-blue darken-2"
-              dark
+              text
+              light
               fab
               v-on="on"
             >
-              <v-icon>mdi-plus</v-icon>
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
       </template>
 
@@ -17,13 +17,11 @@
           class="headline grey lighten-2 justify-center"
           primary-title
         >
-          Write a Post
+          Eliminate Group
         </v-card-title>
 
         <v-container>
-        <v-textarea label="Write something..." :auto-grow="true" solo>
-
-        </v-textarea>
+            
         </v-container>
         
 

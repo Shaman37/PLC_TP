@@ -17,7 +17,7 @@
           class="headline grey lighten-2 justify-center"
           primary-title
         >
-          Write a Post
+          Add a Project
         </v-card-title>
 
         <v-container>
@@ -37,7 +37,7 @@
             @click="dialog = false"            
           >
             <div class="text-center">
-            Post
+            Create
             </div>
           </v-btn>
         </v-card-actions>

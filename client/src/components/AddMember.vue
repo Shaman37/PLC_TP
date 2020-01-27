@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="text-center">
     <v-dialog v-model="dialog" width="750">
       <template v-slot:activator="{ on }">
             <v-btn
               color="light-blue darken-2"
               dark
               fab
+              absolute
               v-on="on"
             >
               <v-icon>mdi-plus</v-icon>
@@ -17,13 +18,11 @@
           class="headline grey lighten-2 justify-center"
           primary-title
         >
-          Write a Post
+          Add Member
         </v-card-title>
 
         <v-container>
-        <v-textarea label="Write something..." :auto-grow="true" solo>
-
-        </v-textarea>
+        
         </v-container>
         
 
@@ -37,7 +36,7 @@
             @click="dialog = false"            
           >
             <div class="text-center">
-            Post
+            Add
             </div>
           </v-btn>
         </v-card-actions>

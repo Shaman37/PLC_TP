@@ -4,6 +4,8 @@ import Dashboard from '../views/Dashboard.vue'
 import Groups from '../views/Groups.vue'
 import Course from '../views/Course.vue'
 import Profile from '../views/Profile.vue'
+import Friends from '../views/Friends.vue'
+import Album from '../views/Album.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile
+  },
+  {
+    path: '/friends',
+    name: 'friends',
+    component: Friends
+  },
+  {
+    path: '/album',
+    name: 'album',
+    component: Album
   }
 ]
 
