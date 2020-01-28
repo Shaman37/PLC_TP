@@ -80,6 +80,8 @@ router.post('/', function (req, res) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+
+
 /* POST files*/
 router.post('/:postId/files', function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -109,6 +111,17 @@ router.post('/:postId/files', function (req, res) {
     .then(post => res.jsonp(post))
     .catch(error => res.status(500).jsonp(error))
 });
+
+/* POST post comment */
+router.post('/:postId/comments', function (req, res) {
+  Post.insert(req.body)
+    .then(data => Post.addComment(req.params.postId, data._id)
+      .then(user => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
 
 /* PATCH posts */
 router.patch('/:idPost', function (req, res) {

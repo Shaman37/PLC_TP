@@ -73,6 +73,13 @@ module.exports.insertFile = (postId, array) => {
         .exec()
 }
 
+module.exports.addComment = (postId, commentId) => {
+    return Post
+        .findOneAndUpdate({ _id: postId }, { $push: { comments: commentId }}, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+
 module.exports.update = (id, data) => {
     return Post
         .findOneAndUpdate({ _id: id }, data, { new: true, useFindAndModify: false })
