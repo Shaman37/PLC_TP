@@ -53,6 +53,15 @@ module.exports.userFeed = (id) => {
 
 }
 
+module.exports.userEvents = (id) => {
+    return User
+        .findOne({ _id: id }, { events: 1 })
+        .populate("events")
+        .exec()
+
+}
+
+
 module.exports.userbyEmail = (email) => {
     return User
         .findOne({ email: email })
@@ -84,6 +93,13 @@ module.exports.friendsPosts = (id) => {
 module.exports.addToFeed = (id_user, id_post) => {
     return User
         .findOneAndUpdate({ _id: id_user }, { $push: { feed: id_post } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+
+module.exports.createEvent = (id_user, id_event) => {
+    return User
+        .findOneAndUpdate({ _id: id_user }, { $push: { events: id_event } }, { new: true, useFindAndModify: false })
         .exec()
 }
 
@@ -125,3 +141,8 @@ module.exports.removePost = (userId, postId) => {
         .exec()
 }
 
+module.exports.removeEvent = (userId, eventId) => {
+    return User
+        .findOneAndUpdate({ _id: userId }, { $pull: { events: eventId } }, { new: true, useFindAndModify: false })
+        .exec()
+}

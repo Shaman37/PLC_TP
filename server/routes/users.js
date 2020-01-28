@@ -7,6 +7,8 @@ var mongoose = require('mongoose')
 var User = require('../controllers/users')
 var Group = require('../controllers/groups')
 var Post = require('../controllers/posts')
+var Event = require('../controllers/events')
+
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -181,11 +183,31 @@ router.get('/:userId/groups', function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user events */
+router.get('/:userId/events', function (req, res, next) {
+  User.userEvents(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+
+
 /* PATCH user */
 router.patch('/:idUser', function (req, res) {
   User.update(req.params.idUser, req.body)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
+})
+
+
+/* POST user event */
+router.post('/:idUser/events', function (req, res) {
+  Event.insert(req.body)
+    .then(event => User.createEvent(req.params.idUser, event._id)
+      .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+
 })
 
 /* POST user friend request */
@@ -233,6 +255,19 @@ router.delete('/:idUser/feed', function (req, res) {
   User.removePost(req.params.idUser, req.body.postId)
     .then(data => Post.remove(req.body.postId)
       .then(data => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* DELETE user event */
+router.delete('/:idUser/events', function (req, res) {
+  User.removeEvent(req.params.idUser, req.body.eventId)
+    .then(event => Event.eventFeed(req.body.eventId)
+      .then(feed => Post.removeMany(feed.feed.map(x => x._id))
+        .then(posts => Event.remove(req.body.eventId)
+          .then(data => res.jsonp(data))
+          .catch(error => res.jsonp(error)))
+        .catch(error => res.jsonp(error)))
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })

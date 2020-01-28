@@ -20,6 +20,10 @@ const usersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     }],
+    events: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    }],
     pending:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users' 
