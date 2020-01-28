@@ -54,7 +54,7 @@
         <v-tabs-items v-model="tab2">
             <v-tab-item value="sem1">
     
-                <v-list two-line subheader>
+                <v-list two-line subheader class="mt-12">
                 <v-card width="100%" v-for="(item, i) in ucs[year].sem_1" :key="i">
                     <v-list-item :class="colors[i]">
                     <v-list-item-content>

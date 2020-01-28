@@ -1,8 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card>
-        <v-container fluid>
+      <v-card> 
           <v-row>
             <v-col
               v-for="n in 20"
@@ -30,7 +29,6 @@
               </v-card>
             </v-col>
           </v-row>
-        </v-container>
       </v-card>
     </v-col>
   </v-row>

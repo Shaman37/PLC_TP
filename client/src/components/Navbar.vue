@@ -15,21 +15,6 @@
             
             <v-spacer></v-spacer>
 
-            <!-- Dashboard -->
-            <v-btn text router :to="'/'">
-                Dashboard
-            </v-btn>
-
-            <!-- Course -->
-            <v-btn text router :to="'/course'">
-                Course
-            </v-btn>
-
-            <!-- Groups -->
-            <v-btn text router :to="'/groups'">
-                Groups
-            </v-btn>
-
             <v-spacer></v-spacer>
 
             <!-- Profile -->
