@@ -78,3 +78,9 @@ module.exports.remove = id => {
         .deleteOne({ _id: id })
         .exec()
 }
+
+module.exports.removeMany = ids => {
+    return Event
+        .deleteOne({ _id: { $in: id } })
+        .exec()
+}

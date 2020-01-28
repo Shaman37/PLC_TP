@@ -112,3 +112,15 @@ module.exports.removeEvent = (id, eventId) => {
         .findOneAndUpdate({ _id: id }, { $pull: { events: eventId } }, { new: true, useFindAndModify: false })
         .exec()
 }
+
+module.exports.removeMember = (id, userId) => {
+    return Group
+        .findOneAndUpdate({ _id: id }, { $pull: { members: userId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.removePending = (id, userId) => {
+    return Group
+        .findOneAndUpdate({ _id: id }, { $pull: { pending: userId } }, { new: true, useFindAndModify: false })
+        .exec()
+}

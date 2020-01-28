@@ -84,3 +84,9 @@ module.exports.remove = id => {
         .deleteOne({_id: id})
         .exec()
 }
+
+module.exports.removeMany = feed => {
+    return Post
+        .deleteMany({_id: {$in: feed}})
+        .exec()
+}
