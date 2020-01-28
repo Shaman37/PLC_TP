@@ -1,0 +1,1 @@
+var Chat = require('../models/chats')
