@@ -84,6 +84,16 @@ router.patch('/:idEvent', function (req, res) {
         .catch(error => res.status(500).jsonp(error))
   })
 
+
+/* DELETE event post */
+router.delete('/:idEvent/feed', function (req, res) {
+    Event.removePost(req.params.idEvent, req.body.postId)
+      .then(data => Post.remove(req.body.postId)
+        .then(data => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error)))
+      .catch(error => res.status(500).jsonp(error))
+  })  
+
 /* DELETE event */
 router.delete('/:idEvent', verifyToken, function (req, res) {
     Event.remove(req.params.idEvent)

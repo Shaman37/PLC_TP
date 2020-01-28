@@ -174,8 +174,6 @@ router.get('/:userId/groups/feed', function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
-
-
 /* GET user groups */
 router.get('/:userId/groups', function (req, res, next) {
   Group.userGroups(req.params.userId)
@@ -192,7 +190,7 @@ router.patch('/:idUser', function (req, res) {
 
 /* POST user friend request */
 router.post('/:idUser/request', function (req, res) {
-  User.request(req.params.idUser, req.body)
+  User.request(req.params.idUser, req.body.idRequest)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
@@ -200,8 +198,8 @@ router.post('/:idUser/request', function (req, res) {
 
 /* POST user accept friend request */
 router.post('/:idUser/friends', function (req, res) {
-  User.friendAccept(req.params.idUser, req.body._id)
-    .then(data => User.friends(req.body._id, req.params.idUser)
+  User.friendAccept(req.params.idUser, req.body.idRequest)
+    .then(data => User.friends(req.body.idRequest, req.params.idUser)
       .then(user => res.jsonp(data))
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
@@ -211,6 +209,22 @@ router.post('/:idUser/friends', function (req, res) {
 router.delete('/:idUser', function (req, res) {
   User.remove(req.params.idUser)
     .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* DELETE user friend request */
+router.delete('/:idUser/request', function (req, res) {
+  User.RemoveRequest(req.params.idUser, req.body.idRequest)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* DELETE user friend */
+router.delete('/:idUser/friends', function (req, res) {
+  User.friendDelete(req.params.idUser, req.body.idRequest)
+    .then(data => User.friendDelete(req.body.idRequest, req.params.idUser)
+      .then(user => res.jsonp(data))
+      .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
 

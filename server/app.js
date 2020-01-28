@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
+const fileUpload = require('express-fileupload');
 
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
@@ -21,6 +22,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/Students', { useNewUrlParser: true, 
 
 const app = express();
 
+app.use(fileUpload());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors())

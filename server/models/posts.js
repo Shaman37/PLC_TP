@@ -8,7 +8,7 @@ const postsSchema = new mongoose.Schema({
     category: [String],
     text: String,
     photo: { type: String, required: false },
-    file: { type: String, required: false },
+    files: [String],
     date: String,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,

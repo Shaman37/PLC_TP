@@ -56,9 +56,21 @@ module.exports.postComments = (id) => {
         .exec()
 }
 
+module.exports.getFiles = (id) => {
+    return Post
+        .findOne({ _id: id }, { files: 1 })
+        .exec()
+}
+
 module.exports.insert = post => {
     post.date = new Date().toISOString()
     return Post.create(post)
+}
+
+module.exports.insertFile = (postId, array) => {
+    return Post
+        .findOneAndUpdate({ _id: postId }, { $addToSet: { files: { $each: array } }}, { new: true, useFindAndModify: false })
+        .exec()
 }
 
 module.exports.update = (id, data) => {

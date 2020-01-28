@@ -67,6 +67,12 @@ module.exports.addToFeed = (id_event, id_post) => {
         .exec()
 }
 
+module.exports.removePost = (id, postId) => {
+    return Event
+        .findOneAndUpdate({ _id: id }, { $pull: { feed: postId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
 module.exports.remove = id => {
     return Event
         .deleteOne({ _id: id })
