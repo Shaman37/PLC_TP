@@ -36,4 +36,11 @@ router.post('/:chatId/messages', function (req, res) {
         .catch(error => res.status(500).jsonp(error))
 })
 
+/* POST chat member */
+router.post('/:chatId/member', function (req, res) {
+    Chat.insertMember(req.params.chatId,req.body.userId)
+        .then(chat => res.jsonp(chat))
+        .catch(error => res.status(500).jsonp(error))
+})
+
 module.exports = router

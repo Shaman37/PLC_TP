@@ -25,28 +25,52 @@
     
             <v-list nav rounded class="mt-3">
     
-                <v-list-item link>
+                <v-list-item link router :to="'/'">
                     <v-list-item-icon>
-                        <v-icon>mdi-account-plus</v-icon>
+                        <v-icon>mdi-view-dashboard</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        Add Friend
+                        <v-list-item-title>Dashboard</v-list-item-title>
                     </v-list-item-content>
     
                 </v-list-item>
     
                 <v-divider inset></v-divider>
-
+    
                 <v-list-item link router :to="'/friends'">
                     <v-list-item-icon>
                         <v-icon>mdi-account-multiple</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        <v-list-item-title>Friend List</v-list-item-title>
+                        <v-list-item-title>Friends</v-list-item-title>
                     </v-list-item-content>
     
                 </v-list-item>
-
+    
+                <v-divider inset></v-divider>
+                
+                <v-list-item link router :to="'/groups'">
+                    <v-list-item-icon>
+                        <v-icon>mdi-google-circles-extended</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Groups</v-list-item-title>
+                    </v-list-item-content>
+    
+                </v-list-item>
+    
+                <v-divider inset></v-divider>
+                
+                <v-list-item link router :to="'/course'">
+                    <v-list-item-icon>
+                        <v-icon>mdi-school</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Course</v-list-item-title>
+                    </v-list-item-content>
+    
+                </v-list-item>
+    
                 <v-divider inset></v-divider>
     
                 <v-list-item link router :to="'/album'">
