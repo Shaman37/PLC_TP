@@ -23,19 +23,25 @@ module.exports.chatInfo = chatId => {
 module.exports.chatMessages = chatId => {
     return Chat
         .findOne({ _id: chatId }, { messages: 1 })
-        .populate("messages")
-        .sort({"$messages.date":1})
+        .populate({
+            path: "messages", 
+            populate: {
+                path: "author",
+                select: "name"
+            }
+        })
+        .sort({ "$messages.date": 1 })
         .exec()
 }
 
-module.exports.insertMessage = (chatId,messageId) => {
+module.exports.insertMessage = (chatId, messageId) => {
     return Chat
         .findOneAndUpdate({ _id: chatId }, { $push: { messages: messageId } }, { new: true, useFindAndModify: false })
         .exec()
 }
 
 
-module.exports.insertMember = (chatId,userId) => {
+module.exports.insertMember = (chatId, userId) => {
     return Chat
         .findOneAndUpdate({ _id: chatId }, { $push: { members: userId } }, { new: true, useFindAndModify: false })
         .exec()
@@ -45,6 +51,5 @@ module.exports.insertMember = (chatId,userId) => {
 module.exports.insert = chat => {
     return Chat
         .create(chat)
-        .exec()
 }
 
