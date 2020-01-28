@@ -6,7 +6,8 @@ const messagesSchema = new mongoose.Schema({
         ref: 'users'
     },
 
-    content: String
+    content: String,
+    date: String
 
 },
 

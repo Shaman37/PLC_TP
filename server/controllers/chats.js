@@ -1,1 +1,42 @@
 var Chat = require('../models/chats')
+
+
+module.exports.chatInfo = chatId => {
+    return Chat
+        .findOne({ _id: chatId })
+        .exec()
+}
+
+module.exports.chatList = userId => {
+    return Chat
+        .find({ members: userId })
+        .exec()
+}
+
+
+module.exports.chatInfo = chatId => {
+    return Chat
+        .findOne({ _id: chatId })
+        .exec()
+}
+
+module.exports.chatMessages = chatId => {
+    return Chat
+        .findOne({ _id: chatId }, { messages: 1 })
+        .populate("messages")
+        .sort({"$messages.date":1})
+        .exec()
+}
+
+module.exports.insertMessage = (chatId,messageId) => {
+    return Chat
+        .findOneAndUpdate({ _id: chatId }, { $push: { messages: messageId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+module.exports.insert = chat => {
+    return Chat
+        .create(chat)
+        .exec()
+}
+

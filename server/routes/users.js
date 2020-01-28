@@ -190,6 +190,13 @@ router.get('/:userId/events', function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user chats */
+router.get('/:userId/chats', function (req, res, next) {
+  Chat.chatList(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
 
 
 /* PATCH user */
