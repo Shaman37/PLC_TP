@@ -34,6 +34,14 @@ module.exports.insertMessage = (chatId,messageId) => {
         .exec()
 }
 
+
+module.exports.insertMember = (chatId,userId) => {
+    return Chat
+        .findOneAndUpdate({ _id: chatId }, { $push: { members: userId } }, { new: true, useFindAndModify: false })
+        .exec()
+}
+
+
 module.exports.insert = chat => {
     return Chat
         .create(chat)
