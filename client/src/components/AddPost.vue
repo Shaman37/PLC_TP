@@ -21,7 +21,7 @@
         </v-card-title>
 
         <v-container>
-        <v-textarea label="Write something..." :auto-grow="true" solo>
+        <v-textarea label="Write something..." :auto-grow="true" solo v-model="post">
 
         </v-textarea>
         </v-container>
@@ -34,7 +34,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="dialog = false"            
+            @click="addPost;dialog=false" 
           >
             <div class="text-center">
             Post
@@ -47,11 +47,31 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { mapGetters } from "vuex";
+
   export default {
+    
     data() {
       return {
         dialog: false,
+        post: ''
       }
     },
+    computed: {
+      ...mapGetters(["getToken"]),
+    },
+    methods: {
+      addPost(){
+        axios({
+        method: "POST",
+        url: "http://localhost:1920/api/posts",
+        data: {
+          text:this.post
+        },
+        headers: { Authorization: "Bearer " + this.getToken }
+      })
+      }
+    },  
   }
 </script>

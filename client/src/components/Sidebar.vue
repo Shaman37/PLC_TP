@@ -25,7 +25,7 @@
     
             <v-list nav rounded class="mt-3">
     
-                <v-list-item link router :to="'/'">
+                <v-list-item link router :to="'/dashboard'">
                     <v-list-item-icon>
                         <v-icon>mdi-view-dashboard</v-icon>
                     </v-list-item-icon>

@@ -15,19 +15,19 @@
                                 <v-col cols="8">
                                     <v-row class="justify-center text-center">
                                         <v-col cols="12">
-                                            <v-text class="mt-12 mx-4 title">Manuel Monteiro</v-text>
+                                            <v-card-text class="mx-4 title">Manuel Monteiro</v-card-text>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-text class="mt-2 mx-4 subheader text-wrap">Mestrado Integrado em Engenharia Informática</v-text>
+                                            <v-card-text class="mx-4 subheader text-wrap">Mestrado Integrado em Engenharia Informática</v-card-text>
                                         </v-col>
                                     </v-row>
-                                    <v-divider class="mt-12"></v-divider>
+                                    <v-divider></v-divider>
                                 </v-col>
     
                                 <v-col cols="12" class="mx-4 text-wrap">
-                                    <v-text>
+                                    <v-card-text>
                                         B
-                                    </v-text>
+                                    </v-card-text>
                                 </v-col>
 
                                 <v-col cols="12" class="text-center">

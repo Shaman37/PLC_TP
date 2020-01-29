@@ -3,7 +3,7 @@
 
     <!-- App Layout -->
     <Navbar/>
-    <Sidebar/>
+    <Sidebar v-if="loggedIn"/>
     
     <v-content>
       <v-container>
@@ -17,10 +17,12 @@
 <script>
 import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'App',
   components: {Navbar,Sidebar},
+  computed: mapGetters(["loggedIn"]),
 
   data: () => ({
   

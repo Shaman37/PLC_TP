@@ -6,39 +6,60 @@ import Course from '../views/Course.vue'
 import Profile from '../views/Profile.vue'
 import Friends from '../views/Friends.vue'
 import Album from '../views/Album.vue'
+import Home from '../views/Home.vue'
+import store from '../store/modules/token';
 
 Vue.use(VueRouter)
+
+const ifAuthenticated = (to, from, next) => {
+  if (store.state.token != null) {
+    next()
+    return
+  }
+  next('/')
+}
 
 const routes = [
   {
     path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/dashboard',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/groups',
     name: 'groups',
-    component: Groups
+    component: Groups,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/course',
     name: 'course',
-    component: Course
+    component: Course,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/friends',
     name: 'friends',
-    component: Friends
+    component: Friends,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/album',
     name: 'album',
-    component: Album
+    component: Album,
+    beforeEnter: ifAuthenticated
   }
 ]
 

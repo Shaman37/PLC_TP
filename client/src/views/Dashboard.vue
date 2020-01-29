@@ -35,7 +35,7 @@
           <Post/>
           </v-card >
           <div class="mb-n12">
-          <v-row class="justify-center" absolute>
+          <v-row class="justify-end" absolute>
           
           <AddPost/>
           

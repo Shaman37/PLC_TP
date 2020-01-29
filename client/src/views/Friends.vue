@@ -18,9 +18,9 @@
     
                     <v-tabs-items v-model="tab">
                         <v-tab-item value="tab-1">
-                        <v-conainer>
+                        <v-container>
                             <FriendList/>
-                        </v-conainer>
+                        </v-container>
                         </v-tab-item>
     
                         <v-tab-item value="tab-2">
