@@ -35,6 +35,9 @@ module.exports.userbyId = (id) => {
 module.exports.userFriends = (id) => {
     return User
         .findOne({ _id: id }, { friends: 1 })
+        .populate({path: 'friends',
+                    select: 'name'
+        })
         .exec()
 }
 
