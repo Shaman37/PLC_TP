@@ -22,7 +22,7 @@ const usersSchema = new mongoose.Schema({
     }],
     events: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'events'
     }],
     pending:[{
         type: mongoose.Schema.Types.ObjectId,
