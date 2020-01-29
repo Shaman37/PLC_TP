@@ -48,7 +48,10 @@ module.exports.userUcs = (id) => {
 module.exports.userFeed = (id) => {
     return User
         .findOne({ _id: id }, { feed: 1 })
-        .populate("feed")
+        .populate({path: 'feed',
+        populate: {path: 'author', select: 'name'}
+
+    })
         .exec()
 
 }
@@ -80,12 +83,13 @@ module.exports.update = (id, data) => {
 
 
 module.exports.friendsPosts = (id) => {
-    return User.aggregate([{ $match: { _id: new mongoose.Types.ObjectId(id) } }, { $unwind: "$friends" },
+    return User.aggregate([{ $match: { _id: new mongoose.Types.ObjectId(id) } },
     { $lookup: { from: 'users', localField: 'friends', foreignField: '_id', as: 'posts' } },
-    { $unwind: "$posts" }, { $unwind: "$posts.feed" },
     { $lookup: { from: 'posts', localField: 'posts.feed', foreignField: '_id', as: 'posts' } },
     { $unwind: "$posts" },
-    { $group: { _id: "$_id", feed: { $push: "$posts" } } }])
+    { $lookup: { from: 'users', localField: 'posts.author', foreignField: '_id', as: 'posts.author' }},
+    { $group: { _id: "$_id", feed: { $push: "$posts" }}}])
+
 
 }
 

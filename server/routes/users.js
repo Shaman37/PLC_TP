@@ -164,7 +164,7 @@ router.get('/:userId/posts', function (req, res, next) {
   User.friendsPosts(req.params.userId)
     .then(posts => User.userFeed(req.params.userId)
       .then(data => {
-
+        console.log(posts[0].author)
         userPosts._id = posts[0]._id
         userPosts.feed = posts[0].feed.concat(data.feed)
 
