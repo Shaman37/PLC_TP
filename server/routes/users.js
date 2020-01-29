@@ -3,12 +3,12 @@ var router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-var mongoose = require('mongoose')
 var User = require('../controllers/users')
 var Group = require('../controllers/groups')
 var Post = require('../controllers/posts')
 var Event = require('../controllers/events')
-
+var Visitor = require('../grammar/visitor')
+var rimraf = require('rimraf')
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -75,50 +75,59 @@ router.post('/login', (req, res) => {
 
 // POST user
 router.post('/', (req, res) => {
-  const { name, email, password, b_date, biography, course, year, ucs, feed, friends } = req.body
 
-  User.userbyEmail(email)
-    .then(resp => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  if (!fs.existsSync('data/tmp/'))
+    fs.mkdirSync('data/tmp/', (err) => {
+      if (err) throw err;
+    })
+
+  req.files.file.mv('data/tmp/' + req.files.file.name, function (err) {
+    if (err)
+      return res.status(500).send(err);
+  })
+
+
+  Visitor.parseDocument('data/tmp/', req.files.file.name, async (usersList) => {
+
+    var exit = 0
+    var users = JSON.parse(usersList)
+    rimraf.sync('data/tmp/')
+
+    for (let i = 0; i < users.length; i++) {
+
+      const { name, email, password, biography, course, year } = users[i]
+
+      resp = await User.userbyEmail(email)
       if (resp) {
-        res.status(401).jsonp({ status: "Email already in use" })
+        exit = 1
+        res.status(500).jsonp({ status: "ERRO: Emails ja registados" })
+        break;
       } else {
         let user = {
           name,
           email,
           password,
-          b_date,
           biography,
           course,
           year,
-          ucs,
-          feed,
-          friends
         }
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(user.password, salt, (err, hash) => {
             user.password = hash
-            user.b_date = ''
-            user.biography = ''
-            user.course = ''
-            user.year = ''
-            user.ucs = []
-            user.feed = []
-            user.friends = []
 
             User.insert(user)
-              .then(() => {
-                res.status(200).jsonp({ status: "OK" })
-              })
-              .catch(err => {
-                res.status(500).jsonp({ status: "User not registered" });
-              })
           })
         })
       }
-    })
-    .catch(err => {
-      res.status(500).jsonp({ status: "ERROR BD" })
-    })
+    }
+    if(exit!=1)
+      res.status(200).jsonp({ status: "OK" })
+  })
+
 });
 
 /* GET user info */

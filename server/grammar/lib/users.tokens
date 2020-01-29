@@ -1,0 +1,17 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+T__4=5
+T__5=6
+STR=7
+NUM=8
+EMAIL=9
+PASS=10
+WS=11
+'NAME:'=1
+'EMAIL:'=2
+'PASSWORD:'=3
+'BIOGRAPHY:'=4
+'COURSE:'=5
+'YEAR:'=6
