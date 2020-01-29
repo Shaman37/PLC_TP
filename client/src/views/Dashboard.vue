@@ -38,7 +38,7 @@
           <v-row class="justify-end" absolute>
           
           <AddPost/>
-          
+
           </v-row>
           </div>
           </v-tab-item>
@@ -65,14 +65,15 @@
   import Chat from '@/components/Chat'
   import Events from '@/components/Events'
   import AddPost from '@/components/AddPost'
+  
 
   export default {
     name: "dashboard",
     components: {
       Post,
-      AddPost,
       Chat,
-      Events
+      Events,
+      AddPost
     },
     data() {
       return {

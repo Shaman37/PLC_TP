@@ -2,15 +2,15 @@
   <div>
     <v-dialog v-model="dialog" width="750">
       <template v-slot:activator="{ on }">
-            <v-btn
-              color="light-blue darken-2"
-              dark
-              fab
-              v-on="on"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-      </template>
+              <v-btn
+                color="light-blue darken-2"
+                dark
+                fab
+                v-on="on"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+</template>
 
       <v-card > 
         <v-card-title
@@ -34,7 +34,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="addPost;dialog=false" 
+            @click="createPost" 
           >
             <div class="text-center">
             Post
@@ -48,10 +48,13 @@
 
 <script>
   import axios from 'axios'
-  import { mapGetters } from "vuex";
-
+  import {
+    mapGetters,
+    mapMutations
+  } from "vuex";
+  
   export default {
-    
+  
     data() {
       return {
         dialog: false,
@@ -59,19 +62,38 @@
       }
     },
     computed: {
-      ...mapGetters(["getToken"]),
+      ...mapGetters(["getToken", "getId", "getPosts"]),
     },
     methods: {
-      addPost(){
+      ...mapMutations(["setToken", "setId", "addPost"]),
+  
+      createPost() {
+      
         axios({
-        method: "POST",
-        url: "http://localhost:1920/api/posts",
-        data: {
-          text:this.post
-        },
-        headers: { Authorization: "Bearer " + this.getToken }
-      })
+            method: "POST",
+            url: "http://localhost:1920/api/posts",
+            data: {
+              text: this.post,
+              author: this.getId
+            },
+            headers: {
+              Authorization: "Bearer " + this.getToken
+            }
+          }).then(res => {
+            if (res.data.status == "ERROR INVALID TOKEN") {
+              localStorage.removeItem("access_token");
+              this.removeToken();
+              this.$router.push("/");
+            } else {
+              this.addPost(res.data);
+            }
+          })
+          .catch(err => {
+            console.log("Catch " + err);
+          });
+
+          this.dialog = false;
       }
-    },  
+    },
   }
 </script>

@@ -47,7 +47,7 @@
             }
         },
         methods: {
-            ...mapMutations(["setToken","setId"]),
+            ...mapMutations(["setToken","setId","setPosts"]),
     
             login() {
                 // console.log("entrei submit");
@@ -62,6 +62,7 @@
                                 if (this.shouldStayLoggedIn) {
                                     localStorage.setItem("access_token", response.data.token);
                                     localStorage.setItem("current_user", response.data.uid);
+                                    localStorage.setItem("user_posts", 0);
                                 }
     
                                 this.setToken(response.data.token);

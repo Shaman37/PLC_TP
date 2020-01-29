@@ -1,7 +1,8 @@
 const state = {
     token: localStorage.getItem('access_token') || null , 
-    uid : localStorage.getItem('current_user') || null,
-    name : null
+    uid : "",
+    posts : [],
+    name : ""
 }
 
 const getters = {
@@ -10,7 +11,8 @@ const getters = {
         return state.token != null
     },
     getName : state => state.name,
-    getId : state => state.uid
+    getId : state => state.uid,
+    getPosts : state => state.posts
 }
 
 const actions = {}
@@ -19,8 +21,10 @@ const mutations = {
     setToken: (state, token) => state.token = token,
     setId: (state, uid) => state.uid = uid,
     setName: (state,name) => state.name = name,
+    setPosts: (state,posts) => state.posts = posts,
     removeToken: (state) => state.token = null,
-    removeId: (state) => state.uid = null
+    removeId: (state) => state.uid = null,
+    addPost: (state, post) => state.posts.push(post)
 }
 
 export default {
