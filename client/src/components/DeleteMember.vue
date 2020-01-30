@@ -33,7 +33,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="dialog = false"            
+            @click="removeMember(gId,uId)"            
           >
             <div class="text-center">
             Remove
@@ -47,10 +47,21 @@
 
 <script>
   export default {
+    name:'DeleteMember',
+    props:{
+      gId: String,
+      uId: String
+    },
     data() {
       return {
         dialog: false,
       }
     },
+    methods:{
+      removeMember(groupId,userId){
+        //axios ded
+        console.log(groupId,userId)
+      }
+    }
   }
 </script>

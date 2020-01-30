@@ -117,7 +117,7 @@ export default {
       posts: []
     };
   },
-  computed: mapGetters(["getToken", "getId", "getPosts"]),
+  computed: mapGetters(["getToken", "getId"]),
 
   methods: {
     ...mapMutations(["setPosts"]),
@@ -131,7 +131,7 @@ export default {
   mounted: function() {
     try {
       axios
-        .get("http://localhost:1920/api/users/" + this.getId + "/posts", {
+        .get("http://localhost:1920/api/users/" + this.getId + "/feed", {
           headers: {
             Authorization: "Bearer " + this.getToken
           }
