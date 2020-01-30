@@ -1,5 +1,10 @@
 var Chat = require('../models/chats')
 
+module.exports.list = () => {
+    return Chat
+        .find()
+        .exec()
+}
 
 module.exports.chatInfo = chatId => {
     return Chat
