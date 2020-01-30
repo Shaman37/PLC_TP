@@ -106,10 +106,6 @@ module.exports.fp = (id) => {
             populate: {
                 path: 'feed', populate: {
                     path: 'author', select: 'name'
-                },
-                populate: {
-                    path: 'comments',
-                    populate: { path: 'author', select: 'name' }
                 }
             },
             select: 'name'
