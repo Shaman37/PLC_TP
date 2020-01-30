@@ -18,13 +18,15 @@
                 </v-toolbar>
                 <v-navigation-drawer class="scroll" permanent color="grey lighten-5">
                     <v-list nav rounded>
-                        <v-list-item link v-for="(friend,index) in friends" :key="index">
+                        <!-- Iterate through contact list -->
+                        <v-list-item link v-for="(friend,index) in friends" :key="index" @click="select=index">
                             <v-list-item-title>
                                 <v-avatar color="green">
                                 </v-avatar>
                                 <span class="ml-6">{{friend.name}}</span>
                             </v-list-item-title>
                         </v-list-item>
+                        <!-- || -->
                         <v-divider class="my-4"></v-divider>
                     </v-list>
                 </v-navigation-drawer>
@@ -34,7 +36,7 @@
                 <v-toolbar dark color="light-blue darken-2">
                     <v-spacer></v-spacer>
                     <v-toolbar-title>
-                        João vieira
+                        {{friends[select].name}}
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
@@ -45,8 +47,7 @@
                                 <v-avatar class="ml-10" color="green" size="40">
                                 </v-avatar>
                             </v-col>
-    
-    
+                            
                             <v-card color="grey lighten-3" shaped class="ml-6 mr-12 mt-2" max-width="65%">
                                 <v-card-text>
                                     {{message1}}
@@ -92,7 +93,8 @@
             return {
                 message: '',
                 message1: 'antigo',
-                friends: []
+                friends: [],
+                select: 0,
             }
         },
         computed: mapGetters(["getToken", "getId", "getPosts"]),
@@ -118,8 +120,13 @@
                             this.removeToken();
                             this.$router.push("/");
                         } else {
+                            console.log(res.data.friends)
                             this.friends = res.data.friends;
-                            
+    
+                            var i;
+                            for (i = 0; i < this.friends.length; i++) {
+                                console.log(this.friends[i].name)
+                            }
                         }
                     })
                     .catch(err => {
