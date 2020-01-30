@@ -146,6 +146,13 @@ router.get('/:userId/friends', verifyToken, function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user pending */
+router.get('/:userId/pending', verifyToken, function (req, res, next) {
+  User.userPending(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
 /* GET user Ucs */
 router.get('/:userId/ucs', verifyToken, function (req, res, next) {
   User.userUcs(req.params.userId)

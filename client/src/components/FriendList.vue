@@ -3,22 +3,22 @@
         <v-col cols="12">
             <v-card class="scroll2">
                 <v-row>
-                    <v-col v-for="n in 20" :key="n" class="d-flex child-flex" cols="4">
+                    <v-col v-for="(friend,index) in this.friends" :key="index" class="d-flex child-flex" cols="4">
                         <v-card class="d-flex mx-2">
                             <v-row>
                                 <v-col cols="4">
                                     <v-avatar size="175" color="red" class="ml-3">
-                                        <img src="src" alt="alt">
+                                        <img src="../assets/logo.png" alt="">
                                     </v-avatar>
                                 </v-col>
     
                                 <v-col cols="8">
                                     <v-row class="justify-center text-center">
                                         <v-col cols="12">
-                                            <v-card-text class="mx-4 title">Manuel Monteiro</v-card-text>
+                                            <v-card-text class="mx-4 title">{{friend.name}}</v-card-text>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-card-text class="mx-4 subheader text-wrap">Mestrado Integrado em Engenharia Informática</v-card-text>
+                                            <v-card-text class="mx-4 subheader text-wrap">{{friend.course}}</v-card-text>
                                         </v-col>
                                     </v-row>
                                     <v-divider></v-divider>
@@ -26,7 +26,7 @@
     
                                 <v-col cols="12" class="mx-4 text-wrap">
                                     <v-card-text>
-                                        B
+                                        {{friend.biography}}
                                     </v-card-text>
                                 </v-col>
 
@@ -49,6 +49,7 @@
 
 <script>
     export default {
+        props: ['friends']
     
     }
 </script>
