@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
 })
 
 /* GET chat messages */
-router.get('/:chatId/messages', function (req, res) {
+router.get('/:chatId/messages', verifyToken, function (req, res) {
     Chat.chatMessages(req.params.chatId)
         .then(data => res.jsonp(data))
         .catch(error => res.status(500).jsonp(error))
@@ -38,7 +38,7 @@ router.get('/:chatId/messages', function (req, res) {
 router.post('/:chatId/messages', function (req, res) {
     Message.insert(req.body)
         .then(message => Chat.insertMessage(req.params.chatId, message._id)
-            .then(chat => res.jsonp(chat))
+            .then(chat => {console.log(chat);res.jsonp(chat)})
             .catch(error => res.status(500).jsonp(error)))
         .catch(error => res.status(500).jsonp(error))
 })

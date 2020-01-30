@@ -15,6 +15,13 @@ module.exports.chatInfo = chatId => {
 module.exports.chatList = userId => {
     return Chat
         .find({ members: userId })
+        .populate({
+            path: "messages", 
+            populate: {
+                path: "author",
+                select: "name"
+            }
+        })
         .exec()
 }
 
@@ -42,6 +49,13 @@ module.exports.chatMessages = chatId => {
 module.exports.insertMessage = (chatId, messageId) => {
     return Chat
         .findOneAndUpdate({ _id: chatId }, { $push: { messages: messageId } }, { new: true, useFindAndModify: false })
+        .populate({
+            path: "messages", 
+            populate: {
+                path: "author",
+                select: "name"
+            }
+        })
         .exec()
 }
 

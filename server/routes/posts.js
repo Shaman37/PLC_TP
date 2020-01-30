@@ -75,7 +75,14 @@ router.get('/:postId/files/:fileName', function (req, res, next) {
 router.post('/', function (req, res) {
   Post.insert(req.body)
     .then(data => User.addToFeed(data.author, data._id)
-      .then(user => res.jsonp(data))
+      .then(user =>{
+        var aux = {author: {name: "", _id: ""}, text: "", date: ""}
+        aux.author.name = user.name
+        aux.text = data.text
+        aux.date = data.date
+        //console.log("AUX" + data.toObject())
+        res.jsonp(aux)
+      }) 
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
