@@ -1,3 +1,11 @@
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+</style>
+
 <template>
   <div>
     <v-card flat>
@@ -24,7 +32,7 @@
 
           <v-tabs-items v-model="tab">
             <v-tab-item value="tab-1">
-              <v-card class="scroll2">
+              <v-card class="scroll">
                 <v-row class="text-center">
                   <v-col cols="12">
                     <v-avatar color="green" size="256">
@@ -48,7 +56,7 @@
             </v-tab-item>
 
             <v-tab-item value="tab-2">
-              <v-card class="scroll2 mb-n12">
+              <v-card class="scroll mb-n12">
                 <Feed/>
               </v-card>
             </v-tab-item>

@@ -1,3 +1,11 @@
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+</style>
+
 <template>
   <div>
     <v-card flat>
@@ -24,7 +32,7 @@
             </v-tab-item>
   
             <v-tab-item value="tab-2">
-              <v-card class="scroll2">
+              <v-card class="scroll">
                 <Projects/>
               </v-card>
             </v-tab-item>

@@ -1,5 +1,11 @@
-<style>
-.scroll3 {
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+
+.scroll2 {
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 760px;
@@ -21,7 +27,7 @@
             <AddGroup />
           </v-toolbar-content>
         </v-toolbar>
-        <v-navigation-drawer class="scroll3" permanent color="grey lighten-5">
+        <v-navigation-drawer class="scroll2" permanent color="grey lighten-5">
           <v-list nav >
             <v-list-item v-for="(group,index) in this.groups.data" :key="index" @click="select = group">
               <v-btn rounded text width="75%">
@@ -69,7 +75,7 @@
 
               <v-tabs-items v-model="tab">
                 <v-tab-item value="tab-1">
-                  <v-card class="scroll2 mb-n12">
+                  <v-card class="scroll mb-n12">
                     <GroupPosts :g="select.feed" />
                   </v-card>
                   <div class="mb-n12">

@@ -1,5 +1,5 @@
-<style>
-    .scroll2 {
+<style scoped>
+    .scroll {
         overflow-y: scroll;
         overflow-x: hidden;
         max-height: 765px;
@@ -31,7 +31,7 @@
   
         <v-tabs-items v-model="tab">
           <v-tab-item value="tab-1">
-          <v-card class="scroll2 mb-n12">
+          <v-card class="scroll mb-n12">
           <Post/>
           </v-card >
           <div class="mb-n12">

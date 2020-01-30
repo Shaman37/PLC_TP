@@ -1,5 +1,5 @@
-<style>
-    .scroll4 {
+<style scoped>
+    .scroll {
         overflow-y: auto;
         max-height: 595px;
     }

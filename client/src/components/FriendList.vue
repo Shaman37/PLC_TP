@@ -1,7 +1,15 @@
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+</style>
+
 <template>
     <v-row>
         <v-col cols="12">
-            <v-card class="scroll2">
+            <v-card class="scroll">
                 <v-row>
                     <v-col v-for="n in 20" :key="n" class="d-flex child-flex" cols="4">
                         <v-card class="d-flex mx-2">
