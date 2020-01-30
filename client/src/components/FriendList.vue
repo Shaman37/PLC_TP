@@ -1,66 +1,56 @@
 <template>
-    <v-row>
-        <v-col cols="12">
-            <v-card class="scroll2">
-                <v-row>
-                    <v-col v-for="(friend,index) in this.friends" :key="index" class="d-flex child-flex" cols="4">
-                        <v-card class="d-flex mx-2">
-                            <v-row>
-                                <v-col cols="4">
-                                    <v-avatar size="175" color="red" class="ml-3">
-                                        
-                                    <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" />
-                                    </v-avatar>
-                                </v-col>
-    
-                                <v-col cols="8">
-                                    <v-row class="justify-center text-center">
-                                        <v-col cols="12">
-                                            <v-card-text class="mx-4 title">{{friend.name}}</v-card-text>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-card-text class="mx-4 subheader text-wrap">{{friend.course}}</v-card-text>
-                                        </v-col>
-                                    </v-row>
-                                    <v-divider></v-divider>
-                                </v-col>
-    
-                                <v-col cols="12" class="mx-4 text-wrap">
-                                    <v-card-text>
-                                        {{friend.biography}}
-                                    </v-card-text>
-                                </v-col>
+  <v-row>
+    <v-col cols="12">
+      <v-card class="scroll2">
+        <v-row>
+          <v-col
+            v-for="(friend,index) in this.friends"
+            :key="index"
+            class="d-flex child-flex"
+            cols="4"
+          >
+            <v-card class="d-flex mx-2">
+              <v-row>
+                <v-col cols="4">
+                  <v-avatar size="175" color="red" class="ml-3">
+                    <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" />
+                  </v-avatar>
+                </v-col>
 
-                                <v-col cols="12" class="text-center">
-                                <v-divider></v-divider>
-                                    <v-btn icon class="pt-3">
-                                <v-icon text fab light>mdi-arrow-right</v-icon>
-                            </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-card>
+                <v-col cols="8">
+                  <v-row class="justify-center text-center">
+                    <v-col cols="12">
+                      <v-card-text class="mx-4 title">{{friend.name}}</v-card-text>
                     </v-col>
-                </v-row>
-    
-    
+                    <v-col cols="12">
+                      <v-card-text class="mx-4 subheader text-wrap">{{friend.course}}</v-card-text>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                </v-col>
+
+                <v-col cols="12" class="mx-4 text-wrap">
+                  <v-card-text>{{friend.biography}}</v-card-text>
+                </v-col>
+
+                <v-col cols="12" class="text-center">
+                  <v-divider></v-divider>
+                  <v-btn icon class="pt-3">
+                    <v-icon text fab light>mdi-arrow-right</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card>
-        </v-col>
-    </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
-    export default {
-
-        computed: mapGetters(["getToken", "getId"]),
-
-        props: ['friends']
-
-
-    
-        }
-    
-    
-    
+export default {
+  name: 'FriendList',
+  props: ["friends"]
+};
 </script>
