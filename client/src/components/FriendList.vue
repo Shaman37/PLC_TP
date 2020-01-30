@@ -1,7 +1,15 @@
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+</style>
+
 <template>
     <v-row>
         <v-col cols="12">
-            <v-card class="scroll2">
+            <v-card class="scroll">
                 <v-row>
                     <v-col v-for="(friend,index) in this.friends" :key="index" class="d-flex child-flex" cols="4">
                         <v-card class="d-flex mx-2">
@@ -48,8 +56,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
     export default {
+
+        computed: mapGetters(["getToken", "getId"]),
+
         props: ['friends']
+
+
     
-    }
+        }
+    
+    
+    
 </script>

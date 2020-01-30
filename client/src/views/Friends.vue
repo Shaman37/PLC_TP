@@ -71,7 +71,7 @@ created: async function(){
           Authorization: "Bearer " + this.getToken
         }})
         this.friends = response.data.friends
-        console.log(this.friends)
+
 
         
         let response1 = await axios.get('http://localhost:1920/api/users/' + this.getId + '/pending',

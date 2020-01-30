@@ -1,5 +1,5 @@
-<style>
-.scroll5 {
+<style scoped>
+.scroll {
   overflow-y: auto;
   max-height: 700px;
 }
@@ -32,7 +32,7 @@
 
             <v-tabs-items v-model="tab">
               <v-tab-item value="tab-1">
-                <v-container class="scroll5">
+                <v-container class="scroll">
                   <v-list two-line subheader>
                     <v-card>
                       <v-list-item v-for="(m,index) in g.admin" :key="index">
@@ -75,7 +75,7 @@
               </v-tab-item>
 
               <v-tab-item value="tab-2">
-                <v-container class="scroll5">
+                <v-container class="scroll">
                   <v-list two-line subheader>
                     <v-card>
                       <v-list-item v-for="(m,index) in g.pending" :key="index">
