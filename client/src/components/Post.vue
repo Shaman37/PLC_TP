@@ -5,8 +5,8 @@
         <v-expansion-panel-header>
           <v-card class="mt-3">
             <v-card-title>
-              <v-avatar color="indigo" size="52">
-                <img src="../assets/logo.png" />
+              <v-avatar size="52" color="grey">
+                <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" />
               </v-avatar>
 
               <v-card-subtitle

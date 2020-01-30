@@ -10,6 +10,7 @@ var Event = require('../controllers/events')
 var Visitor = require('../grammar/visitor')
 var Chat = require('../controllers/chats')
 var rimraf = require('rimraf')
+var path = require('path')
 
 const { verifyToken } = require('../middleware/check-auth')
 
@@ -139,9 +140,45 @@ router.get('/:userId', verifyToken, function (req, res, next) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* GET user photo */
+router.get('/:userId/photo', function (req, res, next) {
+
+  if (fs.existsSync('data/users/' + req.params.userId + '/')) {
+
+    fs.readdir(path.join(__dirname, '../data/users/' + req.params.userId, '/'), function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
+      
+      var flag = false
+      for(let i = 0; i < files.length; i++){
+        
+        var name = path.parse(files[i]).name
+       
+        if (name == "photo"){
+          res.status(200).sendFile(path.join(__dirname, '../data/users/' + req.params.userId, '/', files[i]))
+          flag = true
+          break      
+        }
+      }
+      if (flag == false) 
+        res.status(500).send("NO PHOTO")
+    })
+  }else{
+    res.status(500).send("NO DIRECTORY")
+  }
+})
+
 /* GET user friends */
 router.get('/:userId/friends', verifyToken, function (req, res, next) {
   User.userFriends(req.params.userId)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* GET user pending */
+router.get('/:userId/pending', verifyToken, function (req, res, next) {
+  User.userPending(req.params.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
@@ -165,18 +202,19 @@ router.get('/:userId/posts', function (req, res, next) {
   var userPosts = { _id: "", feed: [] }
   var aux
   User.fp(req.params.userId)
-    .then(posts =>{
+    .then(posts => {
       userPosts._id = posts._id
-      for(var i = 0 ; i<posts.friends.length;i++){
+      for (var i = 0; i < posts.friends.length; i++) {
         userPosts.feed = userPosts.feed.concat(posts.friends[i].feed)
 
       }
       userPosts.feed = userPosts.feed.concat(posts.feed)
-      userPosts.feed.sort(function(a,b) {
+      userPosts.feed.sort(function (a, b) {
         return new Date(b.date) - new Date(a.date)
       })
-      
-      res.jsonp(userPosts)})
+
+      res.jsonp(userPosts)
+    })
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -218,6 +256,27 @@ router.patch('/:idUser', function (req, res) {
     .catch(error => res.status(500).jsonp(error))
 })
 
+/* POST photo */
+router.post('/:userId/photo', function (req, res) {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No file was uploaded.');
+  }
+
+  if (!fs.existsSync('data/users/' + req.params.userId))
+    fs.mkdirSync('data/users/' + req.params.userId, (err) => {
+      if (err) throw err;
+    })
+
+    const photo = req.files.file
+    const ext = path.extname(photo.name)
+
+    photo.mv('data/users/' + req.params.userId + '/photo' + ext, function (err) {
+      if (err)
+        return res.status(500).send(err);
+      else
+        return res.status(200).send("PHOTO UPLOADED")
+    })
+});
 
 /* POST user event */
 router.post('/:idUser/events', function (req, res) {
