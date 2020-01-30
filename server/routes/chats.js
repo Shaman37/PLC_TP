@@ -7,6 +7,13 @@ var Message = require('../controllers/messages')
 const { verifyToken } = require('../middleware/check-auth')
 
 /* GET specific chat */
+router.get('/', function (req, res) {
+    Chat.list()
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(500).jsonp(error))
+})
+
+/* GET specific chat */
 router.get('/:chatId', function (req, res) {
     Chat.chatInfo(req.params.chatId)
         .then(data => res.jsonp(data))
