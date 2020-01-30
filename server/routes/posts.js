@@ -64,10 +64,10 @@ router.get('/:postId/files/', function (req, res, next) {
 
 /* GET specific file */
 router.get('/:postId/files/:fileName', function (req, res, next) {
-  fs.readFile('data/' + req.params.postId + '/' + req.params.fileName, (err, data) => {
+  fs.readFile('data/posts/' + req.params.postId + '/' + req.params.fileName, (err, data) => {
     if (err) 
       return res.status(500).send(err)
-    res.status(200).sendFile(path.join(__dirname, '../data/' + req.params.postId, req.params.fileName))
+    res.status(200).sendFile(path.join(__dirname, '../data/posts/' + req.params.postId, req.params.fileName))
   })
 })
 
@@ -81,15 +81,14 @@ router.post('/', function (req, res) {
 })
 
 
-
 /* POST files*/
 router.post('/:postId/files', function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
 
-  if (!fs.existsSync('data/' + req.params.postId))
-    fs.mkdirSync('data/' + req.params.postId, (err) => {
+  if (!fs.existsSync('data/posts/' + req.params.postId))
+    fs.mkdirSync('data/posts/' + req.params.postId, (err) => {
       if (err) throw err;
     })
 
@@ -101,7 +100,7 @@ router.post('/:postId/files', function (req, res) {
     arrayFiles.push(file.name)
     console.log(arrayFiles)
 
-    file.mv('data/' + req.params.postId + '/' + file.name, function (err) {
+    file.mv('data/posts/' + req.params.postId + '/' + file.name, function (err) {
       if (err)
         return res.status(500).send(err);
     })

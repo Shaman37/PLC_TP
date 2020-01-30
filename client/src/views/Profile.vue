@@ -28,7 +28,7 @@
                 <v-row class="text-center">
                   <v-col cols="12">
                     <v-avatar color="green" size="256">
-                      <img src="../assets/logo.png" />
+                      <img :src="'http://localhost:1920/api/users/' + this.getId + '/photo'" />
                     </v-avatar>
 
                     <v-col cols="12">

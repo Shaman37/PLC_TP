@@ -4,8 +4,8 @@
     <v-navigation-drawer clipped permanent app v-model="drawer" width="275" color="grey lighten-4">
       <v-row class="text-center">
         <v-col cols="12" class="mt-10">
-          <v-avatar size="175" color="red">
-            <img src="src" alt="alt" />
+          <v-avatar size="175" color="grey">
+            <img :src="'http://localhost:1920/api/users/' + this.getId + '/photo'" />
           </v-avatar>
         </v-col>
       </v-row>
@@ -14,9 +14,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="title">{{user.name}}</v-list-item-title>
-              <v-list-item-subtitle
-                class="mt-2 text-wrap"
-              >{{user.course}}</v-list-item-subtitle>
+              <v-list-item-subtitle class="mt-2 text-wrap">{{user.course}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-col>
@@ -89,35 +87,38 @@ export default {
   data() {
     return {
       drawer: true,
-      user: {}
-    }
+      user: {},
+      photo: ""
+    };
   },
-    computed: mapGetters(["getToken", "getId", "getPosts"]),
-    
-    mounted: function() {
-            try {
-                axios
-                    .get("http://localhost:1920/api/users/" + this.getId, {
-                        headers: {
-                            Authorization: "Bearer " + this.getToken
-                        }
-                    })
-                    .then(res => {
-                        if (res.data.status == "ERROR INVALID TOKEN") {
-                            localStorage.removeItem("access_token");
-                            this.removeToken();
-                            this.$router.push("/");
-                        } else {
-                            this.user = res.data;
-                        }
-                    })
-                    .catch(err => {
-                        console.log("Catch " + err);
-                    });
-            } catch (e) {
-                console.log("ERROR: " + e);
-                return e;
-            }
-        }
+
+
+  computed: mapGetters(["getToken", "getId", "getPosts"]),
+
+  mounted: function() {
+    try {
+      axios
+        .get("http://localhost:1920/api/users/" + this.getId, {
+          headers: {
+            Authorization: "Bearer " + this.getToken
+          }
+        })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          } else {
+            this.user = res.data;
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+    } catch (e) {
+      console.log("ERROR: " + e);
+      return e;
+    }
+  }
 };
 </script>
