@@ -1,17 +1,17 @@
 <template>
     <v-container>
-        <v-card class="mt-3">
+        <v-card class="mt-3" v-for="(post,index) in g" :key="index" >
             <v-card-title>
                 <v-avatar color="indigo" size="52">
                     <img src="../assets/logo.png">
                 </v-avatar>
     
     
-                <span class="font-weight-medium pl-5">Manuel Monteiro</span>
+                <span class="font-weight-medium pl-5">{{post.author.name}}</span>
     
                 <v-spacer></v-spacer>
     
-                <span class="overline">24/01/2020</span>
+                <span class="overline">{{post.date}}</span>
     
                 <v-divider class="ml-3" vertical></v-divider>
     
@@ -26,7 +26,7 @@
     
             <v-divider></v-divider>
             <v-card-text class="ml-7">
-                Elit sint eu aliquip culpa eu labore.
+                {{post.text}}
             </v-card-text>
     
             <v-card-actions class="justify-center">
@@ -99,13 +99,18 @@
 </template>
 
 <script>
+    //import axios from 'axios'
     
     export default {
+        
+        props: ["g"],
         data() {
+                
             return {
                 comment: '',
-                show: false
-            }
+                show: false,
+                feed: this.g
+                            }
         },
         methods: {
             sendMessage() {
