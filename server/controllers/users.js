@@ -113,7 +113,7 @@ module.exports.createEvent = (id_user, id_event) => {
 
 module.exports.request = (id_user, id_request) => {
     return User
-        .findOneAndUpdate({ _id: id_user }, { $push: { pending: id_request } }, { new: true, useFindAndModify: false })
+        .findOneAndUpdate({ _id: id_user }, { $addToSet: { pending: id_request } }, { new: true, useFindAndModify: false })
 }
 
 module.exports.RemoveRequest = (id_user, id_request) => {
@@ -123,12 +123,12 @@ module.exports.RemoveRequest = (id_user, id_request) => {
 
 module.exports.friendAccept = (id_user, id_request) => {
     return User
-        .findOneAndUpdate({ _id: id_user }, { $pull: { pending: id_request }, $push: { friends: id_request } }, { new: true, useFindAndModify: false })
+        .findOneAndUpdate({ _id: id_user }, { $pull: { pending: id_request }, $addToSet: { friends: id_request } }, { new: true, useFindAndModify: false })
 }
 
 module.exports.friends = (id_user, id_request) => {
     return User
-        .findOneAndUpdate({ _id: id_user }, { $push: { friends: id_request } }, { new: true, useFindAndModify: false })
+        .findOneAndUpdate({ _id: id_user }, { $addToSet: { friends: id_request } }, { new: true, useFindAndModify: false })
 }
 
 module.exports.friendDelete = (id_user, id_request) => {

@@ -8,6 +8,7 @@ var Group = require('../controllers/groups')
 var Post = require('../controllers/posts')
 var Event = require('../controllers/events')
 var Visitor = require('../grammar/visitor')
+var Chat = require('../controllers/chats')
 var rimraf = require('rimraf')
 
 const { verifyToken } = require('../middleware/check-auth')
@@ -51,7 +52,7 @@ router.post('/login', (req, res) => {
             res.status(401).send({ status: "Authentication failed" })
           } else {
             if (isMatch) {
-              
+
               const uid = user._id
               jwt.sign({
                 id: user._id
@@ -125,7 +126,7 @@ router.post('/', (req, res) => {
         })
       }
     }
-    if(exit!=1)
+    if (exit != 1)
       res.status(200).jsonp({ status: "OK" })
   })
 
@@ -237,9 +238,17 @@ router.post('/:idUser/request', function (req, res) {
 
 /* POST user accept friend request */
 router.post('/:idUser/friends', function (req, res) {
+  const members = {
+    "members": [
+      req.params.idUser,
+      req.body.idRequest
+    ]
+  }
   User.friendAccept(req.params.idUser, req.body.idRequest)
     .then(data => User.friends(req.body.idRequest, req.params.idUser)
-      .then(user => res.jsonp(data))
+      .then(user => Chat.insert(members)
+        .then(chat => res.jsonp(data))
+        .catch(error => res.status(500).jsonp(error)))
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 })
