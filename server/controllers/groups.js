@@ -89,7 +89,12 @@ module.exports.groupMembers = (id) => {
 
 module.exports.userGroups = (userId) => {
     return Group
-        .find({ members: userId })
+        .find({ members: userId , admin: userId})
+        .populate({path: 'members', select: 'name' })
+        .populate({path: 'feed', populate:{ path: 'author', select: 'name'} , populate: {path:'comments' , populate: { path: 'author' , select: 'name'}}} )
+        .populate({path: 'events', populate:{ path: 'author', select: 'name'}} )
+        .populate({path: 'pending', select: 'name' })
+        .populate({path: 'admin', select: 'name' })
         .exec()
 }
 

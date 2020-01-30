@@ -35,8 +35,9 @@ module.exports.userbyId = (id) => {
 module.exports.userFriends = (id) => {
     return User
         .findOne({ _id: id }, { friends: 1 })
-        .populate({path: 'friends',
-                    select: 'name'
+        .populate({
+            path: 'friends',
+            select: 'name'
         })
         .exec()
 }
@@ -51,10 +52,11 @@ module.exports.userUcs = (id) => {
 module.exports.userFeed = (id) => {
     return User
         .findOne({ _id: id }, { feed: 1 })
-        .populate({path: 'feed',
-        populate: {path: 'author', select: 'name'}
+        .populate({
+            path: 'feed',
+            populate: { path: 'author', select: 'name' }
 
-    })
+        })
         .exec()
 
 }
@@ -90,12 +92,33 @@ module.exports.friendsPosts = (id) => {
     { $lookup: { from: 'users', localField: 'friends', foreignField: '_id', as: 'posts' } },
     { $lookup: { from: 'posts', localField: 'posts.feed', foreignField: '_id', as: 'posts' } },
     { $unwind: "$posts" },
-    { $lookup: { from: 'users', localField: 'posts.author', foreignField: '_id', as: 'posts.author' }},
-    { $group: { _id: "$_id", feed: { $push: "$posts" }}}])
+    { $lookup: { from: 'users', localField: 'posts.author', foreignField: '_id', as: 'posts.author' } },
+    { $group: { _id: "$_id", feed: { $push: "$posts" } } }])
 
 
 }
 
+
+module.exports.fp = (id) => {
+    return User.findOne({ _id: id }, { name: 1 })
+        .populate({
+            path: 'friends',
+            populate: {
+                path: 'feed', populate: {
+                    path: 'author', select: 'name'
+                },
+                populate: {
+                    path: 'comments',
+                    populate: { path: 'author', select: 'name' }
+                }
+            },
+            select: 'name'
+        })
+        .populate({ path: 'feed', populate: { path: 'author', select: 'name' } })
+        .exec()
+
+
+}
 
 module.exports.addToFeed = (id_user, id_post) => {
     return User
@@ -133,7 +156,7 @@ module.exports.friends = (id_user, id_request) => {
 
 module.exports.friendDelete = (id_user, id_request) => {
     return User
-        .findOneAndUpdate({ _id: id_user }, {$pull: { friends: id_request } }, { new: true, useFindAndModify: false })
+        .findOneAndUpdate({ _id: id_user }, { $pull: { friends: id_request } }, { new: true, useFindAndModify: false })
 }
 
 module.exports.remove = id => {

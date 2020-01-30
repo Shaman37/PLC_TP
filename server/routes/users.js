@@ -163,19 +163,20 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
 /* GET user available posts */
 router.get('/:userId/posts', function (req, res, next) {
   var userPosts = { _id: "", feed: [] }
-  User.friendsPosts(req.params.userId)
-    .then(posts => User.userFeed(req.params.userId)
-      .then(data => {
-        console.log(posts[0].author)
-        userPosts._id = posts[0]._id
-        userPosts.feed = posts[0].feed.concat(data.feed)
+  var aux
+  User.fp(req.params.userId)
+    .then(posts =>{
+      userPosts._id = posts._id
+      for(var i = 0 ; i<posts.friends.length;i++){
+        userPosts.feed = userPosts.feed.concat(posts.friends[i].feed)
 
-        userPosts.feed.sort(function (p1, p2) {
-          return new Date(p1.date) - new Date(p2.date);
-        })
-        res.jsonp(userPosts)
+      }
+      userPosts.feed = userPosts.feed.concat(posts.feed)
+      userPosts.feed.sort(function(a,b) {
+        return new Date(b.date) - new Date(a.date)
       })
-      .catch(error => res.status(500).jsonp(error)))
+      
+      res.jsonp(userPosts)})
     .catch(error => res.status(500).jsonp(error))
 })
 
