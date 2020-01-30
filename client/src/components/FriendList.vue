@@ -8,7 +8,8 @@
                             <v-row>
                                 <v-col cols="4">
                                     <v-avatar size="175" color="red" class="ml-3">
-                                        <img src="../assets/logo.png" alt="">
+                                        
+                                    <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" />
                                     </v-avatar>
                                 </v-col>
     
@@ -48,8 +49,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
     export default {
+
+        computed: mapGetters(["getToken", "getId"]),
+
         props: ['friends']
+
+
     
-    }
+        }
+    
+    
+    
 </script>
