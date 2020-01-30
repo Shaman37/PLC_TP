@@ -51,12 +51,13 @@ router.post('/login', (req, res) => {
             res.status(401).send({ status: "Authentication failed" })
           } else {
             if (isMatch) {
-
+              
+              const uid = user._id
               jwt.sign({
                 id: user._id
               },
                 privateKey, { expiresIn: '1h', algorithm: 'RS256' }, (err, token) => {
-                  res.status(200).jsonp({ status: "OK LOGGED", token })
+                  res.status(200).jsonp({ status: "OK LOGGED", token, uid })
                 })
 
             } else {
