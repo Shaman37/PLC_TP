@@ -22,10 +22,10 @@ import {mapGetters} from "vuex";
 export default {
   name: 'App',
   components: {Navbar,Sidebar},
-  computed: mapGetters(["loggedIn"]),
+  computed: mapGetters(["loggedIn","getId"]),
 
   data: () => ({
   
-  }),
+  })
 };
 </script>

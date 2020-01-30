@@ -6,12 +6,11 @@
           <v-card class="mt-3">
             <v-card-title>
               <v-avatar size="52" color="grey">
-                <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" />
+                <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" alt="" />
               </v-avatar>
 
               <v-card-subtitle
                 class="title font-weight-medium pl-5"
-                v-model="author"
               >{{post.author.name}}</v-card-subtitle>
 
               <v-spacer></v-spacer>
@@ -110,7 +109,6 @@ export default {
   data() {
     return {
       comment: "",
-      author: "",
       name: "",
       post_date: "",
       post_text: "",
@@ -142,8 +140,8 @@ export default {
             this.removeToken();
             this.$router.push("/");
           } else {
-            this.setPosts(res.data.feed);
             this.posts = res.data.feed;
+            this.setPosts(res.data.feed);
           }
         })
         .catch(err => {

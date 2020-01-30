@@ -1,6 +1,0 @@
-NAME: João Vieira
-EMAIL: mail3@uminho.pt
-PASSWORD: 123
-BIOGRAPHY: Biografia e Mais cenas da vida
-COURSE: Engenharia Fisica
-YEAR: 1

@@ -1,3 +1,11 @@
+<style scoped>
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 765px;
+    }
+</style>
+
 <template>
   <v-row>
     <v-col cols="12">
@@ -12,7 +20,7 @@
             <v-card class="d-flex mx-2">
               <v-row>
                 <v-col cols="4">
-                  <v-avatar size="175" color="red" class="ml-3">
+                  <v-avatar size="120" color="red" class="ml-3">
                     <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" />
                   </v-avatar>
                 </v-col>

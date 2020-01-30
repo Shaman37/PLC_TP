@@ -4,6 +4,18 @@
     <v-navigation-drawer clipped permanent app v-model="drawer" width="275" color="grey lighten-4">
       <v-row class="text-center">
         <v-col cols="12" class="mt-10">
+          <v-card>
+            <v-card-text>
+              <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer />
+              <v-btn color="light-blue darken-2" @click="submitFile">Submit</v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+
           <v-avatar size="175" color="grey">
             <img :src="'http://localhost:1920/api/users/' + this.getId + '/photo'" />
           </v-avatar>
@@ -88,12 +100,38 @@ export default {
     return {
       drawer: true,
       user: {},
-      photo: ""
+      photo: "",
+      file: ""
     };
   },
 
+  computed: mapGetters(["getToken", "getId"]),
+  methods: {
+    submitFile() {
+      let formData = new FormData();
 
-  computed: mapGetters(["getToken", "getId", "getPosts"]),
+      formData.append("file", this.file);
+      axios
+        .post(
+          "http://localhost:1920/api/users/" + this.getId + "/photo",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(function() {
+          console.log("SUCCESS!!");
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    }
+  },
 
   mounted: function() {
     try {

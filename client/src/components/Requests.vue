@@ -1,3 +1,10 @@
+<style scoped>
+.scroll {
+  overflow-y: auto;
+  max-height: 700px;
+}
+</style>
+
 <template>
   <v-container>
     <v-container class="scroll5">

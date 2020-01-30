@@ -149,22 +149,22 @@ router.get('/:userId/photo', function (req, res, next) {
       if (err) {
         return console.log('Unable to scan directory: ' + err);
       }
-      
+
       var flag = false
-      for(let i = 0; i < files.length; i++){
-        
+      for (let i = 0; i < files.length; i++) {
+
         var name = path.parse(files[i]).name
-       
-        if (name == "photo"){
+
+        if (name == "photo") {
           res.status(200).sendFile(path.join(__dirname, '../data/users/' + req.params.userId, '/', files[i]))
           flag = true
-          break      
+          break
         }
       }
-      if (flag == false) 
+      if (flag == false)
         res.status(500).send("NO PHOTO")
     })
-  }else{
+  } else {
     res.status(500).send("NO DIRECTORY")
   }
 })
@@ -262,20 +262,37 @@ router.post('/:userId/photo', function (req, res) {
     return res.status(400).send('No file was uploaded.');
   }
 
-  if (!fs.existsSync('data/users/' + req.params.userId))
+  if (!fs.existsSync('data/users/' + req.params.userId)) {
     fs.mkdirSync('data/users/' + req.params.userId, (err) => {
       if (err) throw err;
     })
+  } else {
+    fs.readdir(path.join(__dirname, '../data/users/' + req.params.userId, '/'), function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
 
-    const photo = req.files.file
-    const ext = path.extname(photo.name)
-
-    photo.mv('data/users/' + req.params.userId + '/photo' + ext, function (err) {
-      if (err)
-        return res.status(500).send(err);
-      else
-        return res.status(200).send("PHOTO UPLOADED")
+      for (let i = 0; i < files.length; i++) {
+        console.log(files[i])
+        try {
+          fs.unlinkSync(path.join(__dirname, '../data/users/' + req.params.userId, '/', files[i]))
+        } catch(err) {
+          console.error(err)
+        }
+      }
     })
+
+  }
+
+  const photo = req.files.file
+  const ext = path.extname(photo.name)
+
+  photo.mv('data/users/' + req.params.userId + '/photo' + ext, function (err) {
+    if (err)
+      return res.status(500).send(err);
+    else
+      return res.status(200).send("PHOTO UPLOADED")
+  })
 });
 
 /* POST user event */

@@ -54,7 +54,7 @@
   } from "vuex";
   
   export default {
-  
+    name: "AddPost",
     data() {
       return {
         dialog: false,
@@ -85,6 +85,7 @@
               this.removeToken();
               this.$router.push("/");
             } else {
+              console.log(res.data)
               this.addPost(res.data);
             }
           })
