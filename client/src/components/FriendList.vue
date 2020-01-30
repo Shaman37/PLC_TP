@@ -7,8 +7,8 @@
                         <v-card class="d-flex mx-2">
                             <v-row>
                                 <v-col cols="4">
-                                    <v-avatar size="175" color="red" class="ml-3">
-                                        <img src="../assets/logo.png" alt="">
+                                    <v-avatar size="120" color="grey" class="ml-3">
+                                        <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" alt="">
                                     </v-avatar>
                                 </v-col>
     

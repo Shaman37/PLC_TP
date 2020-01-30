@@ -27,7 +27,7 @@
               <v-card class="scroll2">
                 <v-row class="text-center">
                   <v-col cols="12">
-                    <v-avatar color="green" size="256">
+                    <v-avatar color="grey" size="256">
                       <img :src="'http://localhost:1920/api/users/' + this.getId + '/photo'" />
                     </v-avatar>
 
@@ -91,7 +91,6 @@ export default {
             this.removeToken();
             this.$router.push("/");
           } else {
-            console.log(res.data);
             this.user = res.data;
           }
         })
