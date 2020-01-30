@@ -59,16 +59,11 @@
               </v-tab>
 
               <v-tab href="#tab-2">
-                Chat
-                <v-icon class="mx-3">mdi-message</v-icon>
-              </v-tab>
-
-              <v-tab href="#tab-3">
                 Events
                 <v-icon class="mx-3">mdi-calendar</v-icon>
               </v-tab>
 
-              <v-tab href="#tab-4">
+              <v-tab href="#tab-3">
                 Members
                 <v-icon class="mx-3">mdi-account-multiple</v-icon>
               </v-tab>
@@ -86,16 +81,12 @@
                 </v-tab-item>
 
                 <v-tab-item value="tab-2">
-                  <GroupChat />
-                </v-tab-item>
-
-                <v-tab-item value="tab-3">
                   <v-card class="mt-3">
                     <GroupEvents :gEvents="select.events" />
                   </v-card>
                 </v-tab-item>
 
-                <v-tab-item value="tab-4">
+                <v-tab-item value="tab-3">
                   <v-card class="mb-n10">
                     <GroupMembers :g="select"/>
                   </v-card>
@@ -120,7 +111,6 @@ import AddPost from "@/components/AddPost";
 import AddGroup from "@/components/AddGroup";
 import AddMember from "@/components/AddMember";
 import DeleteGroup from "@/components/DeleteGroup";
-import GroupChat from "@/components/GroupChat";
 import GroupEvents from "@/components/GroupEvents";
 import GroupMembers from "@/components/GroupMembers";
 import { mapGetters } from "vuex";
@@ -133,7 +123,6 @@ export default {
     AddMember,
     DeleteGroup,
     GroupPosts,
-    GroupChat,
     GroupEvents,
     GroupMembers
   },
