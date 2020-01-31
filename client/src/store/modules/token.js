@@ -41,13 +41,7 @@ const mutations = {
       state.events.splice(index, 1);
       
     }},
-    removeGroup: (state,group) => {
-      
-        const index = state.groups.indexOf(group);
-        if (index > -1) {
-          state.groups.splice(index, 1);
-          
-        }},
+    removeGroup: (state,index) => state.groups.splice(index, 1),
     
     addPost: (state, post) => state.posts.unshift(post),
     addMessage: (state, message) => state.chat.push(message),

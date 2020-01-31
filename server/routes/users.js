@@ -229,7 +229,7 @@ router.get('/:userId/groups/feed', function (req, res, next) {
 /* GET user groups */
 router.get('/:userId/groups', function (req, res, next) {
   Group.userGroups(req.params.userId)
-    .then(data => res.jsonp(data))
+    .then(data =>{console.log(data);res.jsonp(data)})
     .catch(error => res.status(500).jsonp(error))
 })
 

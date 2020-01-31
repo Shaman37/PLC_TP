@@ -42,7 +42,7 @@ router.get('/:groupId/events', verifyToken, function (req, res, next) {
 })
 
 /* GET group feed */
-router.get('/:groupId/feed', verifyToken, function (req, res, next) {
+router.get('/:groupId/feed', function (req, res, next) {
   Group.groupFeed(req.params.groupId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -52,9 +52,11 @@ router.get('/:groupId/feed', verifyToken, function (req, res, next) {
 router.post('/:groupId/feed', function (req, res) {
   Post.insert(req.body)
     .then(data => Group.addToFeed(req.params.groupId, data._id)
-      .then(group => res.jsonp(data))
-      .catch(error => res.status(500).jsonp(error)))
-    .catch(error => res.status(500).jsonp(error))
+     .then(post => Post.postbyId(data._id))
+      .then(group => {console.log(post);res.jsonp(data)})
+      .catch(error => res.status(500).jsonp(error))
+      .catch(error => res.status(500).jsonp(error))
+    .catch(error => res.status(500).jsonp(error)))
 })
 
 /* GET group info */
@@ -67,7 +69,7 @@ router.get('/:groupId', verifyToken, function (req, res, next) {
 /* POST groups */
 router.post('/', function (req, res) {
   Group.insert(req.body)
-    .then(data => res.jsonp(data))
+    .then(data =>res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -121,7 +123,6 @@ router.delete('/:idGroup', function (req, res) {
           .catch(error => res.status(500).jsonp(error))
         Event.remove(group.events[i])
       }
-      Post.removeMany(group.feed)
       Group.remove(req.params.idGroup)
         .then(done => res.jsonp(done))
         .catch(error => res.status(500).jsonp(error))

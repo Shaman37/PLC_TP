@@ -21,7 +21,11 @@
         </v-card-title>
 
         <v-container>
-            
+        <v-row class="justify-center">
+        <v-col cols="6">
+            <span>Are you sure you want to erase this group?</span>
+        </v-col>
+        </v-row>
         </v-container>
         
 
@@ -32,10 +36,10 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="dialog = false"            
+            @click="deleteGroup(gDel)"            
           >
             <div class="text-center">
-            Post
+            Remove
             </div>
           </v-btn>
         </v-card-actions>
@@ -45,11 +49,45 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {mapGetters,mapMutations} from 'vuex'
+
   export default {
+    name: 'DeleteGroup',
+    props: ['gDel'],
     data() {
       return {
         dialog: false,
       }
     },
+    computed: mapGetters(["getGroups"]),
+    methods:{
+      ...mapMutations([ "removeToken", "removeGroup"]),
+      deleteGroup(index) {
+        axios({
+            method: "DELETE",
+            url: "http://localhost:1920/api/groups/" + this.getGroups[index]._id,
+            data: {
+              idGroup: this.getGroups[index]._id
+            },
+            headers: {
+              Authorization: "Bearer " + this.getToken
+            }
+          }).then(res => {
+              if (res.data.status == "ERROR INVALID TOKEN") {
+                localStorage.removeItem("access_token");
+                this.removeToken();
+                this.$router.push("/");
+              } else {
+                  this.removeGroup(index)
+                  
+                }
+              })
+            .catch(err => {
+              console.log("Catch " + err);
+            });
+            this.dialog = false
+          },
+    }
   }
 </script>

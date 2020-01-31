@@ -44,7 +44,7 @@
         </v-sheet>
       </v-col>
     </v-row>
-    <v-row bottom right>
+    <v-row bottom right class="mt-n6">
       <v-col>
         <AddEvent/>
       </v-col>

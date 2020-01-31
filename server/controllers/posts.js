@@ -39,6 +39,7 @@ module.exports.listbyAuthorCat = (author, category) => {
 module.exports.postbyId = (id) => {
     return Post
         .findOne({ _id: id })
+        .populate("author")
         .exec()
 }
 

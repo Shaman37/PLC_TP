@@ -1,29 +1,29 @@
 <template>
-  <div class="text-center">
+  <div>
     <v-dialog v-model="dialog" width="750">
       <template v-slot:activator="{ on }">
-            <v-btn
-              color="grey lighten-4"
-              light
-              small
-              fab
-              v-on="on"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-      </template>
+              <v-btn
+                color="light-blue darken-2"
+                dark
+                fab
+                v-on="on"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+</template>
 
       <v-card > 
         <v-card-title
           class="headline grey lighten-2 justify-center"
           primary-title
         >
-          Create a Group
+          Write a Post
         </v-card-title>
 
         <v-container>
-        <v-text-field v-model="g_name" placeholder="Pick a name for your group...">
-        </v-text-field>
+        <v-textarea label="Write something..." :auto-grow="true" solo v-model="post">
+
+        </v-textarea>
         </v-container>
         
 
@@ -34,7 +34,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="createGroup"            
+            @click="createPost(selD)" 
           >
             <div class="text-center">
             Post
@@ -48,26 +48,33 @@
 
 <script>
   import axios from 'axios'
-  import {mapGetters, mapMutations} from 'vuex'
+  import {
+    mapMutations,
+    mapGetters
+  } from "vuex";
   
   export default {
+    props: ['selD'],
+    name: "AddGroupPost",
     data() {
       return {
         dialog: false,
-        g_name: '',
+        post: ''
       }
     },
-    computed: mapGetters(["getToken", "getId"]),
-    methods:{
-      ...mapMutations(["removeToken","addGroup"]),
-
-      createGroup() {
+    computed:
+      mapGetters(["getId","getToken"])
+    ,
+    methods: {
+      ...mapMutations(["addPost","removeToken"]),
+  
+      createPost(selD) {
         axios({
             method: "POST",
-            url: "http://localhost:1920/api/groups/",
+            url: "http://localhost:1920/api/groups/" + selD._id + "/feed",
             data: {
-              admin: this.getId,
-              name: this.g_name
+              text: this.post,
+              author: this.getId
             },
             headers: {
               Authorization: "Bearer " + this.getToken
@@ -78,15 +85,15 @@
               this.removeToken();
               this.$router.push("/");
             } else {
-              this.addGroup(res.data)
+              this.addPost(res.data);
             }
           })
           .catch(err => {
             console.log("Catch " + err);
           });
-  
-        this.dialog = false;
-      },
-    }
+
+          this.dialog = false;
+      }
+    },
   }
 </script>
