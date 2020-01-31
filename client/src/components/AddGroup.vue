@@ -22,7 +22,8 @@
         </v-card-title>
 
         <v-container>
-        
+        <v-text-field v-model="g_name" placeholder="Pick a name for your group...">
+        </v-text-field>
         </v-container>
         
 
@@ -33,7 +34,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="dialog = false"            
+            @click="createGroup"            
           >
             <div class="text-center">
             Post
@@ -46,11 +47,46 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {mapGetters, mapMutations} from 'vuex'
+  
   export default {
     data() {
       return {
         dialog: false,
+        g_name: '',
       }
     },
+    computed: mapGetters(["getToken", "getId"]),
+    methods:{
+      ...mapMutations(["removeToken","addGroup"]),
+
+      createGroup() {
+        axios({
+            method: "POST",
+            url: "http://localhost:1920/api/groups/",
+            data: {
+              admin: this.getId,
+              name: this.g_name
+            },
+            headers: {
+              Authorization: "Bearer " + this.getToken
+            }
+          }).then(res => {
+            if (res.data.status == "ERROR INVALID TOKEN") {
+              localStorage.removeItem("access_token");
+              this.removeToken();
+              this.$router.push("/");
+            } else {
+              this.addGroup(res.data)
+            }
+          })
+          .catch(err => {
+            console.log("Catch " + err);
+          });
+  
+        this.dialog = false;
+      },
+    }
   }
 </script>

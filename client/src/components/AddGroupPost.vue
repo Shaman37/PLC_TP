@@ -34,7 +34,7 @@
           <v-btn
             color="light-blue darken-2"
             dark
-            @click="createPost" 
+            @click="createPost(selD)" 
           >
             <div class="text-center">
             Post
@@ -49,29 +49,29 @@
 <script>
   import axios from 'axios'
   import {
-    mapGetters,
-    mapMutations
+    mapMutations,
+    mapGetters
   } from "vuex";
   
   export default {
-    name: "AddPost",
+    props: ['selD'],
+    name: "AddGroupPost",
     data() {
       return {
         dialog: false,
         post: ''
       }
     },
-    computed: {
-      ...mapGetters(["getId"]),
-    },
+    computed:
+      mapGetters(["getId","getToken"])
+    ,
     methods: {
       ...mapMutations(["addPost","removeToken"]),
   
-      createPost() {
-      
+      createPost(selD) {
         axios({
             method: "POST",
-            url: "http://localhost:1920/api/posts",
+            url: "http://localhost:1920/api/groups/" + selD._id + "/feed",
             data: {
               text: this.post,
               author: this.getId
@@ -85,7 +85,6 @@
               this.removeToken();
               this.$router.push("/");
             } else {
-              console.log(res.data)
               this.addPost(res.data);
             }
           })

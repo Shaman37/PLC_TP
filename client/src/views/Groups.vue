@@ -24,17 +24,17 @@
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-content>
-            <AddGroup />
+            <AddGroup/>
           </v-toolbar-content>
         </v-toolbar>
         <v-navigation-drawer class="scroll2" permanent color="grey lighten-5">
           <v-list nav >
-            <v-list-item v-for="(group,index) in this.groups.data" :key="index" @click="select = group">
+            <v-list-item v-for="(group,index) in groups" :key="index" @click="select = group">
               <v-btn rounded text width="75%">
                 <span>{{group.name}}</span>
               </v-btn>
               <v-spacer flat></v-spacer>
-              <DeleteGroup />
+              <DeleteGroup :gDel="index"/>
             </v-list-item>
             <v-divider class="my-4"></v-divider>
           </v-list>
@@ -69,24 +69,24 @@
               </v-tab>
 
               <v-tabs-items v-model="tab">
-                <v-tab-item value="tab-1">
+                <v-tab-item value="tab-1" v-if="select != ''">
                   <v-card class="scroll mb-n12">
-                    <GroupPosts :g="select.feed" />
+                    <GroupPosts :sel="select"/>
                   </v-card>
                   <div class="mb-n12">
                     <v-row class="justify-end" absolute>
-                      <AddPost :gId="select._id"/>
+                      <AddGroupPost :selD="select"/>
                     </v-row>
                   </div>
                 </v-tab-item>
 
-                <v-tab-item value="tab-2">
+                <v-tab-item value="tab-2" v-if="select != ''">
                   <v-card class="mt-3">
-                    <GroupEvents :gEvents="select.events" />
+                    <GroupEvents/>
                   </v-card>
                 </v-tab-item>
 
-                <v-tab-item value="tab-3">
+                <v-tab-item value="tab-3" v-if="select != ''">
                   <v-card class="mb-n10">
                     <GroupMembers :g="select"/>
                   </v-card>
@@ -107,18 +107,19 @@
 
 <script>
 import GroupPosts from "@/components/GroupPosts";
-import AddPost from "@/components/AddPost";
+import AddGroupPost from "@/components/AddGroupPost";
 import AddGroup from "@/components/AddGroup";
 import AddMember from "@/components/AddMember";
 import DeleteGroup from "@/components/DeleteGroup";
 import GroupEvents from "@/components/GroupEvents";
 import GroupMembers from "@/components/GroupMembers";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import axios from "axios";
 
 export default {
+  name: 'Groups',
   components: {
-    AddPost,
+    AddGroupPost,
     AddGroup,
     AddMember,
     DeleteGroup,
@@ -129,27 +130,42 @@ export default {
   data() {
     return {
       tab: null,
-      groups: [],
-      select: ''
+      select: '',
+      groups: []
     };
   },
+  methods: {
+    ...mapMutations(["setGroups", "removeToken"]),
 
-  computed: mapGetters(["getToken", "getId"]),
-
-  created: async function() {
-    try {
-      console.log(this.id)
-      let response = await axios.get(
-        "http://localhost:1920/api/users/" + this.getId + "/groups",
-        { headers: { Authorization: "Bearer " + this.getToken } }
-      );
-      this.groups = response;
-      console.log(this.groups.data);
-
-
-    } catch (e) {
-      return e;
-    }
-  }
+  },
+  computed: {
+    ...mapGetters(["getToken", "getId"]),
+  },
+  mounted: function() {
+      try {
+        axios
+          .get("http://localhost:1920/api/users/" + this.getId + "/groups", {
+            headers: {
+              Authorization: "Bearer " + this.getToken
+            }
+          })
+          .then(res => {
+            if (res.data.status == "ERROR INVALID TOKEN") {
+              localStorage.removeItem("access_token");
+              this.removeToken();
+              this.$router.push("/");
+            } else {
+              this.groups = res.data
+              this.setGroups(res.data)
+            }
+          })
+          .catch(err => {
+            console.log("Catch " + err);
+          });
+      } catch (e) {
+        console.log("ERROR: " + e);
+        return e;
+      }
+    },
 };
 </script>

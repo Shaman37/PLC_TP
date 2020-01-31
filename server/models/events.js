@@ -6,16 +6,12 @@ const eventsSchema = new mongoose.Schema({
         ref: 'users'
     },
     name: String,
-    description: String,
-    date: String,
+    start: String,
+    end: String,
     time: String,
     local: String,
+    color: String,
     category: String,
-    photo: [String],
-    feed: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'posts'
-    }],
     uc: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ucs',

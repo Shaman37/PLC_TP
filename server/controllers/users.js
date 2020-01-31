@@ -138,6 +138,9 @@ module.exports.addToFeed = (id_user, id_post) => {
 module.exports.createEvent = (id_user, id_event) => {
     return User
         .findOneAndUpdate({ _id: id_user }, { $push: { events: id_event } }, { new: true, useFindAndModify: false })
+        .populate({
+            path: 'events',
+        })
         .exec()
 }
 

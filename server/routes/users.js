@@ -229,7 +229,7 @@ router.get('/:userId/groups/feed', function (req, res, next) {
 /* GET user groups */
 router.get('/:userId/groups', function (req, res, next) {
   Group.userGroups(req.params.userId)
-    .then(data => res.jsonp(data))
+    .then(data =>{console.log(data);res.jsonp(data)})
     .catch(error => res.status(500).jsonp(error))
 })
 
@@ -299,7 +299,7 @@ router.post('/:userId/photo', function (req, res) {
 router.post('/:idUser/events', function (req, res) {
   Event.insert(req.body)
     .then(event => User.createEvent(req.params.idUser, event._id)
-      .then(data => res.jsonp(data))
+      .then(data =>{res.jsonp(event)})
       .catch(error => res.status(500).jsonp(error)))
     .catch(error => res.status(500).jsonp(error))
 
@@ -365,14 +365,10 @@ router.delete('/:idUser/feed', function (req, res) {
 /* DELETE user event */
 router.delete('/:idUser/events', function (req, res) {
   User.removeEvent(req.params.idUser, req.body.eventId)
-    .then(event => Event.eventFeed(req.body.eventId)
-      .then(feed => Post.removeMany(feed.feed.map(x => x._id))
-        .then(posts => Event.remove(req.body.eventId)
+        .then(user => Event.remove(req.body.eventId)
           .then(data => res.jsonp(data))
           .catch(error => res.jsonp(error)))
-        .catch(error => res.jsonp(error)))
-      .catch(error => res.status(500).jsonp(error)))
-    .catch(error => res.status(500).jsonp(error))
+        .catch(error => res.jsonp(error))
 })
 
 

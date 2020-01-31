@@ -81,7 +81,7 @@
         <v-row class="justify-end mt-n6">
             <v-col cols="10">
                 
-                <v-container>
+                <v-container class="mt-n6">
                     <v-text-field class="mt-8" background-color="grey lighten-3" v-model="chat_text" :append-outer-icon="chat_text ? 'mdi-send' : ''" color="black" rounded filled outlined clear-icon="mdi-close-circle" clearable type="text" label="Message" light placeholder="Write a message..."
                         @click:append-outer="sendMessage" @click:clear="clearMessage" @keydown.enter="sendMessage">
     
@@ -106,7 +106,7 @@
             return {
                 chat_text: '',
                 friends: [],
-                curr_chat: {},
+                curr_chat: '',
                 select: {name: "",id: "", index: 0},
                 prev: ""
             }
@@ -207,6 +207,7 @@
         },
         updated(){
             this.scrollToEnd();
+}   
         }
-    }
+    
 </script>
