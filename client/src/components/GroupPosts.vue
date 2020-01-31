@@ -111,9 +111,6 @@ export default {
   data() {
     return {
       comment: "",
-      name: "",
-      post_date: "",
-      post_text: "",
       posts: []
     };
   },
