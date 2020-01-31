@@ -45,9 +45,9 @@ module.exports.userFriends = (id) => {
 
 module.exports.userPending = (id) => {
     return User
-        .findOne({ _id: id }, { friends: 1 })
+        .findOne({ _id: id }, { pending: 1 })
         .populate({
-            path: 'friends',
+            path: 'pending',
             select: {password: 0}
             
         })

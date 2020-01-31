@@ -1,9 +1,9 @@
 <style scoped>
-    .scroll {
-        overflow-y: scroll;
-        overflow-x: hidden;
-        max-height: 765px;
-    }
+.scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 765px;
+}
 </style>
 
 <template>
@@ -25,7 +25,7 @@
             <v-icon class="mx-3">mdi-account-badge-horizontal</v-icon>
           </v-tab>
 
-          <v-tab href="#tab-2">
+          <v-tab href="#tab-2" v-if="isFriend(user.friends)">
             Posts
             <v-icon class="mx-3">mdi-account-post</v-icon>
           </v-tab>
@@ -36,7 +36,7 @@
                 <v-row class="text-center">
                   <v-col cols="12">
                     <v-avatar color="grey" size="256">
-                      <img :src="'http://localhost:1920/api/users/' + this.getId + '/photo'" />
+                      <img :src="'http://localhost:1920/api/users/' + user._id + '/photo'" />
                     </v-avatar>
 
                     <v-col cols="12">
@@ -45,8 +45,25 @@
                       <v-text class="font-italic subtitle-1 font-weight-light">{{user.course}}</v-text>
                     </v-col>
 
+                    <div v-if="isFriend(user.friends) && !isPending(user.pending)">
                     <v-divider class="pt-6 mx-12"></v-divider>
+                  <v-btn rounded large :disabled="disable" class="pt-3" color="light-blue darken-2" @click="friendRequest(user._id)">
+                    <v-icon text fab light color="white" large>mdi-account-plus</v-icon>
+                  </v-btn>
+                    </div>
+
+                    <div v-if="isPending(user.pending)">
+                    <v-divider class="pt-6 mx-12"></v-divider>
+                  <v-btn disabled rounded large class="pt-3" color="light-blue darken-2">
+                    <v-icon text fab light color="white" large>mdi-account-plus</v-icon>
+                  </v-btn>
+                    </div>
+
+
                   </v-col>
+                  <v-divider class="pt-6 mx-12"></v-divider>
+                  
+
 
                   <v-col cols="12">
                     <v-text class="body-1 pa-12">{{user.biography}}</v-text>
@@ -55,9 +72,9 @@
               </v-card>
             </v-tab-item>
 
-            <v-tab-item value="tab-2">
+            <v-tab-item value="tab-2" v-if="isFriend(user.friends)">
               <v-card class="scroll mb-n12">
-                <Feed/>
+                <UserFeed :id="user._id" />
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -70,17 +87,18 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
-import Feed from "@/components/Feed";
-
+import UserFeed from "@/components/UserFeed";
 
 export default {
+  name: "UserPage",
   components: {
-    Feed
+    UserFeed
   },
   data() {
     return {
       tab: null,
-      user: {}
+      user: {},
+      disable: false
     };
   },
   computed: mapGetters(["getToken", "getId"]),
@@ -88,7 +106,7 @@ export default {
   mounted: function() {
     try {
       axios
-        .get("http://localhost:1920/api/users/" + this.getId, {
+        .get("http://localhost:1920/api/users/" + this.$route.params.idUser, {
           headers: {
             Authorization: "Bearer " + this.getToken
           }
@@ -108,6 +126,44 @@ export default {
     } catch (e) {
       console.log("ERROR: " + e);
       return e;
+    }
+  },
+  methods: {
+    isFriend: function(friends) {
+      console.log(this.getId);
+      if (friends.filter(a => a == this.getId).length > 0) return true;
+      return false;
+    },
+
+    isPending: function(pending) {
+      console.log(this.getId);
+      if (pending.filter(a => a == this.getId).length > 0) return true;
+      return false;
+    },
+
+    friendRequest:  function(userId){
+        axios({
+        method: "POST",
+        url: "http://localhost:1920/api/users/" + userId + "/request",
+        data: {
+          idRequest: this.getId
+        },
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }else{
+            this.disable = true
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
     }
   }
 };

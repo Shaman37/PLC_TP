@@ -65,22 +65,22 @@ export default {
   },
 
 created: async function(){
+    
     try{
+        
+        
         let response = await axios.get('http://localhost:1920/api/users/' + this.getId + '/friends',
         {headers: {
-          Authorization: "Bearer " + this.getToken
+            Authorization: "Bearer " + this.getToken
         }})
         this.friends = response.data.friends
 
-
-        
         let response1 = await axios.get('http://localhost:1920/api/users/' + this.getId + '/pending',
         {headers: {
           Authorization: "Bearer " + this.getToken
         }})
 
         this.pending = response1.data.pending
-
 
     }
     catch(e){

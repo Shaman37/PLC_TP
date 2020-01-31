@@ -6,7 +6,7 @@
           <v-card class="mt-3">
             <v-card-title>
               <v-avatar size="52" color="grey">
-                <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" />
+                <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" alt="" />
               </v-avatar>
 
               <v-card-subtitle

@@ -107,6 +107,10 @@ import axios from "axios";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
+    name:'UserFeed',
+    props: {
+        id:String
+    },
   data() {
     return {
       comment: "",
@@ -131,7 +135,7 @@ export default {
   mounted: function() {
     try {
       axios
-        .get("http://localhost:1920/api/users/" + this.getId + "/feed", {
+        .get("http://localhost:1920/api/users/" + this.id + "/feed", {
           headers: {
             Authorization: "Bearer " + this.getToken
           }
