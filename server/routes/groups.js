@@ -52,9 +52,7 @@ router.get('/:groupId/feed', function (req, res, next) {
 router.post('/:groupId/feed', function (req, res) {
   Post.insert(req.body)
     .then(data => Group.addToFeed(req.params.groupId, data._id)
-     .then(post => Post.postbyId(data._id))
       .then(group => {console.log(post);res.jsonp(data)})
-      .catch(error => res.status(500).jsonp(error))
       .catch(error => res.status(500).jsonp(error))
     .catch(error => res.status(500).jsonp(error)))
 })
