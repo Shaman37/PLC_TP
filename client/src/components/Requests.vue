@@ -19,10 +19,10 @@
             </v-list-item-content>
             <v-list-actions>
               <v-btn icon>
-                <v-icon fab light color="green">mdi-check-circle</v-icon>
+                <v-icon fab light color="green" @click="acceptFriend(user._id)">mdi-check-circle</v-icon>
               </v-btn>
               <v-btn icon>
-                <v-icon text fab light color="red">mdi-close-circle</v-icon>
+                <v-icon text fab light color="red" @click="deleteRequest(user._id)">mdi-close-circle</v-icon>
               </v-btn>
               <v-btn icon @click="showUser(user._id)">
                 <v-icon text fab light>mdi-arrow-right</v-icon>
@@ -38,13 +38,73 @@
 </template>
 
 <script>
+import{mapGetters} from 'vuex'
+import axios from 'axios'
+
 export default {
   props: ["pending"],
+  
+  computed: mapGetters(["getToken", "getId"]),
+
 
   methods:{
     showUser: function(id){
         this.$router.push('users/' + id)
-      }
+      },
+
+    acceptFriend: function(id){
+        
+      axios({
+        method: "POST",
+        url: "http://localhost:1920/api/users/" + this.getId + "/friends",
+        data: {
+          idRequest: id
+        },
+
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+
+      this.dialog = false;
+    
+    },
+    deleteRequest: function(id){
+        
+      axios({
+        method: "DELETE",
+        url: "http://localhost:1920/api/users/" + this.getId + "/request",
+        data: {
+          idRequest: id
+        },
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+
+      this.dialog = false;
+    
+    }
   }
 };
 </script>

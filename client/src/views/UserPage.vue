@@ -45,7 +45,7 @@
                       <v-text class="font-italic subtitle-1 font-weight-light">{{user.course}}</v-text>
                     </v-col>
 
-                    <div v-if="isFriend(user.friends) && !isPending(user.pending)">
+                    <div v-if="!isFriend(user.friends) && !isPending(user.pending) && !ismyPending(user._id)">
                     <v-divider class="pt-6 mx-12"></v-divider>
                   <v-btn rounded large :disabled="disable" class="pt-3" color="light-blue darken-2" @click="friendRequest(user._id)">
                     <v-icon text fab light color="white" large>mdi-account-plus</v-icon>
@@ -56,6 +56,16 @@
                     <v-divider class="pt-6 mx-12"></v-divider>
                   <v-btn disabled rounded large class="pt-3" color="light-blue darken-2">
                     <v-icon text fab light color="white" large>mdi-account-plus</v-icon>
+                  </v-btn>
+                    </div>
+
+                  <div v-if="ismyPending(user._id) && !isFriend(user.friends)">
+                    <v-divider class="pt-6 mx-12"></v-divider>
+                  <v-btn icon>
+                    <v-icon text fab light color="green" large @click="acceptFriend(user._id)">mdi-check-circle</v-icon>
+                  </v-btn>
+                  <v-btn icon>
+                    <v-icon text fab light color="red" large @click="deleteRequest(user._id)">mdi-close-circle</v-icon>
                   </v-btn>
                     </div>
 
@@ -141,6 +151,18 @@ export default {
       return false;
     },
 
+    ismyPending: async function(id) {
+
+      let response = await axios.get("http://localhost:1920/api/users/" + this.getId + '/pending', {
+          headers: {
+            Authorization: "Bearer " + this.getToken
+          }
+      })
+      console.log(response)
+      if (response.data.pending.filter(a => a == id).length > 0) return true;
+      return false;
+    },
+
     friendRequest:  function(userId){
         axios({
         method: "POST",
@@ -164,6 +186,59 @@ export default {
         .catch(err => {
           console.log("Catch " + err);
         });
+    },
+    acceptFriend: function(id){
+        
+      axios({
+        method: "POST",
+        url: "http://localhost:1920/api/users/" + this.getId + "/friends",
+        data: {
+          idRequest: id
+        },
+
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+
+      this.dialog = false;
+    
+    },
+    deleteRequest: function(id){
+        
+      axios({
+        method: "DELETE",
+        url: "http://localhost:1920/api/users/" + this.getId + "/request",
+        data: {
+          idRequest: id
+        },
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+
+      this.dialog = false;
+    
     }
   }
 };
