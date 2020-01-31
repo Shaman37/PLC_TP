@@ -2,8 +2,8 @@
     <v-container>
         <v-card class="mt-3" v-for="(post,index) in g" :key="index" >
             <v-card-title>
-                <v-avatar color="indigo" size="52">
-                    <img src="../assets/logo.png">
+                <v-avatar color="grey" size="52">
+                    <img :src="'http://localhost:1920/api/users/' + post.author._id + '/photo'" />
                 </v-avatar>
     
     

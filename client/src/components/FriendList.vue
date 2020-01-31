@@ -20,7 +20,7 @@
             <v-card class="d-flex mx-2">
               <v-row>
                 <v-col cols="4">
-                  <v-avatar size="120" color="red" class="ml-3">
+                  <v-avatar size="120" color="grey" class="ml-3">
                     <img :src="'http://localhost:1920/api/users/' + friend._id + '/photo'" />
                   </v-avatar>
                 </v-col>
@@ -43,7 +43,7 @@
 
                 <v-col cols="12" class="text-center">
                   <v-divider></v-divider>
-                  <v-btn icon class="pt-3">
+                  <v-btn icon class="pt-3" @click="showUser(friend._id)">
                     <v-icon text fab light>mdi-arrow-right</v-icon>
                   </v-btn>
                 </v-col>
@@ -59,6 +59,13 @@
 <script>
 export default {
   name: 'FriendList',
-  props: ["friends"]
+  props: ["friends"],
+  methods:{
+      showUser: function(id){
+          this.$router.push('users/' + id)
+      }
+  }
+
+
 };
 </script>
