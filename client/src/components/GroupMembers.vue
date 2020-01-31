@@ -88,7 +88,7 @@
                             <v-icon fab light color="green" @click="addMember(g._id,m._id)">mdi-check-circle</v-icon>
                           </v-btn>
                           <v-btn icon>
-                            <v-icon text fab light color="red">mdi-close-circle</v-icon>
+                            <v-icon text fab light color="red" @click="declineMember(g._id, m._id)">mdi-close-circle</v-icon>
                           </v-btn>
                           <v-btn icon>
                             <v-icon text fab light @click="showUser(m._id)">mdi-arrow-right</v-icon>
@@ -159,6 +159,32 @@ export default {
       showUser: function(id){
           this.$router.push('users/' + id)
       }
-  }
+  },
+
+      declineMember(idGroup, idMember) {
+      axios({
+        method: "DELETE",
+        url: "http://localhost:1920/api/groups/" + idGroup + "/pending",
+        data: {
+          userId: idMember
+        },
+        headers: {
+          Authorization: "Bearer " + this.getToken
+        }
+      })
+        .then(res => {
+          if (res.data.status == "ERROR INVALID TOKEN") {
+            localStorage.removeItem("access_token");
+            this.removeToken();
+            this.$router.push("/");
+          }
+        })
+        .catch(err => {
+          console.log("Catch " + err);
+        });
+
+      this.dialog = false;
+    }
+  
 };
 </script>

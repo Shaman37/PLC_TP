@@ -47,7 +47,7 @@ router.get('/:eventId/feed', verifyToken, function (req, res, next) {
 })
 
 /* POST event feed */
-router.post('/:eventId/feed', function (req, res) {
+router.post('/:eventId/feed', verifyToken, function (req, res) {
     Post.insert(req.body)
       .then(data => Event.addToFeed(req.params.eventId,data._id)
                       .then(event => res.jsonp(data))
@@ -78,7 +78,7 @@ router.post('/', verifyToken, function (req, res) {
 })
 
 /* PATCH event */
-router.patch('/:idEvent', function (req, res) {
+router.patch('/:idEvent', verifyToken, function (req, res) {
     Event.update(req.params.idEvent,req.body)
         .then(data => res.jsonp(data))
         .catch(error => res.status(500).jsonp(error))
@@ -86,7 +86,7 @@ router.patch('/:idEvent', function (req, res) {
 
 
 /* DELETE event post */
-router.delete('/:idEvent/feed', function (req, res) {
+router.delete('/:idEvent/feed', verifyToken, function (req, res) {
     Event.removePost(req.params.idEvent, req.body.postId)
       .then(data => Post.remove(req.body.postId)
         .then(data => res.jsonp(data))

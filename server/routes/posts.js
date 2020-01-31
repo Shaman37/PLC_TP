@@ -8,7 +8,7 @@ var path = require('path')
 const { verifyToken } = require('../middleware/check-auth')
 
 /* GET post listing. */
-router.get('/', function (req, res, next) {
+router.get('/', verifyToken, function (req, res, next) {
   if (req.query.category && req.query.author) {
     Post.listbyAuthorCat(req.query.author, req.query.category)
       .then(data => res.jsonp(data))
@@ -56,14 +56,14 @@ router.get('/:postId/comments', verifyToken, function (req, res, next) {
 })
 
 /* GET all fileNames */
-router.get('/:postId/files/', function (req, res, next) {
+router.get('/:postId/files/', verifyToken, function (req, res, next) {
   Post.getFiles(req.params.postId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* GET specific file */
-router.get('/:postId/files/:fileName', function (req, res, next) {
+router.get('/:postId/files/:fileName', verifyToken, function (req, res, next) {
   fs.readFile('data/posts/' + req.params.postId + '/' + req.params.fileName, (err, data) => {
     if (err) 
       return res.status(500).send(err)
@@ -72,7 +72,7 @@ router.get('/:postId/files/:fileName', function (req, res, next) {
 })
 
 /* POST posts */
-router.post('/', function (req, res) {
+router.post('/', verifyToken, function (req, res) {
   Post.insert(req.body)
     .then(data => User.addToFeed(data.author, data._id)
       .then(user =>{
@@ -89,7 +89,7 @@ router.post('/', function (req, res) {
 
 
 /* POST files*/
-router.post('/:postId/files', function (req, res) {
+router.post('/:postId/files', verifyToken, function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -119,7 +119,7 @@ router.post('/:postId/files', function (req, res) {
 });
 
 /* POST post comment */
-router.post('/:postId/comments', function (req, res) {
+router.post('/:postId/comments', verifyToken, function (req, res) {
   Post.insert(req.body)
     .then(data => Post.addComment(req.params.postId, data._id)
       .then(user => res.jsonp(data))
@@ -130,14 +130,14 @@ router.post('/:postId/comments', function (req, res) {
 
 
 /* PATCH posts */
-router.patch('/:idPost', function (req, res) {
+router.patch('/:idPost', verifyToken, function (req, res) {
   Post.update(req.params.idPost, req.body)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE posts */
-router.delete('/:idPost', function (req, res) {
+router.delete('/:idPost', verifyToken, function (req, res) {
   Post.remove(req.params.idPost)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))

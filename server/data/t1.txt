@@ -1,0 +1,6 @@
+NAME: Manuel Monteiro
+EMAIL: mail@mail.com
+PASSWORD: a123
+BIOGRAPHY: Grassroots asynchronous matrices
+COURSE: Mestrado Integrado em Engenharia Informática
+YEAR: 2

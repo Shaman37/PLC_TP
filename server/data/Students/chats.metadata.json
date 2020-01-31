@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"Students.chats"}],"uuid":"18f0e40edb0c4b639b272c5051256842"}

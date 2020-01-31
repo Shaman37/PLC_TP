@@ -141,7 +141,7 @@ router.get('/:userId', verifyToken, function (req, res, next) {
 })
 
 /* GET user photo */
-router.get('/:userId/photo', function (req, res, next) {
+router.get('/:userId/photo', verifyToken, function (req, res, next) {
 
   if (fs.existsSync('data/users/' + req.params.userId + '/')) {
 
@@ -198,7 +198,7 @@ router.get('/:userId/feed', verifyToken, function (req, res, next) {
 })
 
 /* GET user available posts */
-router.get('/:userId/posts', function (req, res, next) {
+router.get('/:userId/posts', verifyToken, function (req, res, next) {
   var userPosts = { _id: "", feed: [] }
   var aux
   User.fp(req.params.userId)
@@ -220,28 +220,28 @@ router.get('/:userId/posts', function (req, res, next) {
 
 
 /* GET user groups feed */
-router.get('/:userId/groups/feed', function (req, res, next) {
+router.get('/:userId/groups/feed', verifyToken, function (req, res, next) {
   Group.userGroupsFeed(req.params.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* GET user groups */
-router.get('/:userId/groups', function (req, res, next) {
+router.get('/:userId/groups', verifyToken, function (req, res, next) {
   Group.userGroups(req.params.userId)
     .then(data =>{console.log(data);res.jsonp(data)})
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* GET user events */
-router.get('/:userId/events', function (req, res, next) {
+router.get('/:userId/events', verifyToken, function (req, res, next) {
   User.userEvents(req.params.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* GET user chats */
-router.get('/:userId/chats', function (req, res, next) {
+router.get('/:userId/chats', verifyToken, function (req, res, next) {
   Chat.chatList(req.params.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -250,14 +250,14 @@ router.get('/:userId/chats', function (req, res, next) {
 
 
 /* PATCH user */
-router.patch('/:idUser', function (req, res) {
+router.patch('/:idUser', verifyToken, function (req, res) {
   User.update(req.params.idUser, req.body)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* POST photo */
-router.post('/:userId/photo', function (req, res) {
+router.post('/:userId/photo', verifyToken, function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No file was uploaded.');
   }
@@ -296,7 +296,7 @@ router.post('/:userId/photo', function (req, res) {
 });
 
 /* POST user event */
-router.post('/:idUser/events', function (req, res) {
+router.post('/:idUser/events', verifyToken, function (req, res) {
   Event.insert(req.body)
     .then(event => User.createEvent(req.params.idUser, event._id)
       .then(data =>{res.jsonp(event)})
@@ -306,7 +306,7 @@ router.post('/:idUser/events', function (req, res) {
 })
 
 /* POST user friend request */
-router.post('/:idUser/request', function (req, res) {
+router.post('/:idUser/request', verifyToken, function (req, res) {
   User.request(req.params.idUser, req.body.idRequest)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -314,7 +314,7 @@ router.post('/:idUser/request', function (req, res) {
 
 
 /* POST user accept friend request */
-router.post('/:idUser/friends', function (req, res) {
+router.post('/:idUser/friends', verifyToken, function (req, res) {
   const members = {
     "members": [
       req.params.idUser,
@@ -331,21 +331,21 @@ router.post('/:idUser/friends', function (req, res) {
 })
 
 /* DELETE user */
-router.delete('/:idUser', function (req, res) {
+router.delete('/:idUser', verifyToken, function (req, res) {
   User.remove(req.params.idUser)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE user friend request */
-router.delete('/:idUser/request', function (req, res) {
+router.delete('/:idUser/request', verifyToken, function (req, res) {
   User.RemoveRequest(req.params.idUser, req.body.idRequest)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE user friend */
-router.delete('/:idUser/friends', function (req, res) {
+router.delete('/:idUser/friends', verifyToken, function (req, res) {
   User.friendDelete(req.params.idUser, req.body.idRequest)
     .then(data => User.friendDelete(req.body.idRequest, req.params.idUser)
       .then(user => res.jsonp(data))
@@ -354,7 +354,7 @@ router.delete('/:idUser/friends', function (req, res) {
 })
 
 /* DELETE user post */
-router.delete('/:idUser/feed', function (req, res) {
+router.delete('/:idUser/feed', verifyToken, function (req, res) {
   User.removePost(req.params.idUser, req.body.postId)
     .then(data => Post.remove(req.body.postId)
       .then(data => res.jsonp(data))
@@ -363,7 +363,7 @@ router.delete('/:idUser/feed', function (req, res) {
 })
 
 /* DELETE user event */
-router.delete('/:idUser/events', function (req, res) {
+router.delete('/:idUser/events', verifyToken, function (req, res) {
   User.removeEvent(req.params.idUser, req.body.eventId)
         .then(user => Event.remove(req.body.eventId)
           .then(data => res.jsonp(data))

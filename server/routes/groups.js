@@ -7,7 +7,7 @@ var Event = require('../controllers/events')
 const { verifyToken } = require('../middleware/check-auth')
 
 /* GET group listing. */
-router.get('/', function (req, res, next) {
+router.get('/', verifyToken, function (req, res, next) {
   if (req.query.name) {
     Group.listbyName(req.query.name)
       .then(data => res.jsonp(data))
@@ -42,14 +42,14 @@ router.get('/:groupId/events', verifyToken, function (req, res, next) {
 })
 
 /* GET group feed */
-router.get('/:groupId/feed', function (req, res, next) {
+router.get('/:groupId/feed', verifyToken, function (req, res, next) {
   Group.groupFeed(req.params.groupId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* POST group feed */
-router.post('/:groupId/feed', function (req, res) {
+router.post('/:groupId/feed', verifyToken, function (req, res) {
   Post.insert(req.body)
     .then(data => Group.addToFeed(req.params.groupId, data._id)
       .then(group => {console.log(post);res.jsonp(data)})
@@ -65,7 +65,7 @@ router.get('/:groupId', verifyToken, function (req, res, next) {
 })
 
 /* POST groups */
-router.post('/', function (req, res) {
+router.post('/', verifyToken, function (req, res) {
   Group.insert(req.body)
     .then(data =>res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -73,7 +73,7 @@ router.post('/', function (req, res) {
 
 
 /* POST group event */
-router.post('/:groupId/events', function (req, res) {
+router.post('/:groupId/events', verifyToken, function (req, res) {
   Event.insert(req.body)
     .then(event =>
 
@@ -87,7 +87,7 @@ router.post('/:groupId/events', function (req, res) {
 
 
 /* POST request group access */
-router.post('/:groupId/pending', function (req, res) {
+router.post('/:groupId/pending', verifyToken, function (req, res) {
   Group.addPending(req.params.groupId, req.body.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -95,7 +95,7 @@ router.post('/:groupId/pending', function (req, res) {
 
 
 /* POST add group member */
-router.post('/:groupId/members', function (req, res) {
+router.post('/:groupId/members', verifyToken, function (req, res) {
   Group.addMember(req.params.groupId, req.body.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -103,14 +103,14 @@ router.post('/:groupId/members', function (req, res) {
 
 
 /* PATCH event */
-router.patch('/:idGroup', function (req, res) {
+router.patch('/:idGroup', verifyToken, function (req, res) {
   Group.update(req.params.idGroup, req.body)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
 })
 
 /* DELETE group */
-router.delete('/:idGroup', function (req, res) {
+router.delete('/:idGroup', verifyToken, function (req, res) {
   Group.groupbyId(req.params.idGroup)
     .then(group => {
       for (var i = 0; i < group.events.length; i++) {
@@ -132,7 +132,7 @@ router.delete('/:idGroup', function (req, res) {
 
 
 /* DELETE group post */
-router.delete('/:idGroup/feed', function (req, res) {
+router.delete('/:idGroup/feed', verifyToken, function (req, res) {
   Group.removePost(req.params.idGroup, req.body.postId)
     .then(data => Post.remove(req.body.postId)
       .then(data => res.jsonp(data))
@@ -141,7 +141,7 @@ router.delete('/:idGroup/feed', function (req, res) {
 })
 
 /* DELETE group member */
-router.delete('/:idGroup/members', function (req, res) {
+router.delete('/:idGroup/members', verifyToken, function (req, res) {
   Group.removeMember(req.params.idGroup, req.body.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -149,7 +149,7 @@ router.delete('/:idGroup/members', function (req, res) {
 
 
 /* DELETE group pending */
-router.delete('/:idGroup/pending', function (req, res) {
+router.delete('/:idGroup/pending', verifyToken, function (req, res) {
   Group.removePending(req.params.idGroup, req.body.userId)
     .then(data => res.jsonp(data))
     .catch(error => res.status(500).jsonp(error))
@@ -158,7 +158,7 @@ router.delete('/:idGroup/pending', function (req, res) {
 
 
 /* DELETE group event */
-router.delete('/:idGroup/events', function (req, res) {
+router.delete('/:idGroup/events', verifyToken, function (req, res) {
   Group.removeEvent(req.params.idGroup, req.body.eventId)
     .then(event => Event.eventFeed(req.body.eventId)
       .then(feed => Post.removeMany(feed.feed.map(x => x._id))
