@@ -7,7 +7,7 @@
 </style>
 
 <template>
-  <div>
+  <v-container>
     <v-card flat>
       <v-toolbar absolute width="99.9%">
       <v-tabs v-model="tab" background-color="light-blue darken-2" centered grow dark slider-color="primary">
@@ -57,7 +57,7 @@
       </v-toolbar>
     </v-card>
       
-  </div>
+  </v-container>
 </template>
 
 <script>

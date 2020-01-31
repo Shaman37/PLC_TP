@@ -62,10 +62,10 @@
       }
     },
     computed: {
-      ...mapGetters(["getToken", "getId", "getPosts"]),
+      ...mapGetters(["getId"]),
     },
     methods: {
-      ...mapMutations(["setToken", "setId", "addPost"]),
+      ...mapMutations(["addPost","removeToken"]),
   
       createPost() {
       

@@ -24,7 +24,7 @@
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-content>
-            <AddGroup />
+            <AddGroup/>
           </v-toolbar-content>
         </v-toolbar>
         <v-navigation-drawer class="scroll2" permanent color="grey lighten-5">
@@ -113,10 +113,11 @@ import AddMember from "@/components/AddMember";
 import DeleteGroup from "@/components/DeleteGroup";
 import GroupEvents from "@/components/GroupEvents";
 import GroupMembers from "@/components/GroupMembers";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import axios from "axios";
 
 export default {
+  name: 'Groups',
   components: {
     AddPost,
     AddGroup,
@@ -133,23 +134,38 @@ export default {
       select: ''
     };
   },
+  methods: {
+    ...mapMutations(["setGroups", "removeToken"]),
 
-  computed: mapGetters(["getToken", "getId"]),
+  },
+  computed: mapGetters(["getToken", "getId", "getGroups"]),
 
-  created: async function() {
-    try {
-      console.log(this.id)
-      let response = await axios.get(
-        "http://localhost:1920/api/users/" + this.getId + "/groups",
-        { headers: { Authorization: "Bearer " + this.getToken } }
-      );
-      this.groups = response;
-      console.log(this.groups.data);
-
-
-    } catch (e) {
-      return e;
-    }
-  }
+  mounted: function() {
+      try {
+        axios
+          .get("http://localhost:1920/api/users/" + this.getId + "/groups", {
+            headers: {
+              Authorization: "Bearer " + this.getToken
+            }
+          })
+          .then(res => {
+            if (res.data.status == "ERROR INVALID TOKEN") {
+              localStorage.removeItem("access_token");
+              this.removeToken();
+              this.$router.push("/");
+            } else {
+              console.log(res)
+              this.groups=res.data
+              this.setGroups(res.data)
+            }
+          })
+          .catch(err => {
+            console.log("Catch " + err);
+          });
+      } catch (e) {
+        console.log("ERROR: " + e);
+        return e;
+      }
+    },
 };
 </script>

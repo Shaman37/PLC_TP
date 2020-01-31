@@ -106,7 +106,7 @@
             return {
                 chat_text: '',
                 friends: [],
-                curr_chat: {},
+                curr_chat: '',
                 select: {name: "",id: "", index: 0},
                 prev: ""
             }
@@ -207,6 +207,7 @@
         },
         updated(){
             this.scrollToEnd();
+}   
         }
-    }
+    
 </script>

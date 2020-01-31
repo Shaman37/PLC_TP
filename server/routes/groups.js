@@ -7,7 +7,7 @@ var Event = require('../controllers/events')
 const { verifyToken } = require('../middleware/check-auth')
 
 /* GET group listing. */
-router.get('/', verifyToken, function (req, res, next) {
+router.get('/', function (req, res, next) {
   if (req.query.name) {
     Group.listbyName(req.query.name)
       .then(data => res.jsonp(data))
