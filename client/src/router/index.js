@@ -7,6 +7,7 @@ import Profile from '../views/Profile.vue'
 import Friends from '../views/Friends.vue'
 import Album from '../views/Album.vue'
 import Home from '../views/Home.vue'
+import UserPage from '../views/UserPage.vue'
 import store from '../store/modules/token';
 
 Vue.use(VueRouter)
@@ -59,6 +60,12 @@ const routes = [
     path: '/album',
     name: 'album',
     component: Album,
+    beforeEnter: ifAuthenticated
+  },
+  {
+    path: '/users/:idUser',
+    name: 'userpage',
+    component: UserPage,
     beforeEnter: ifAuthenticated
   }
 ]

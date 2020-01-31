@@ -11,8 +11,9 @@
       <v-list two-line subheader>
         <v-card>
           <v-list-item v-for="(user,index) in this.pending" :key="index">
-            <v-list-item-avatar color="red"></v-list-item-avatar>
+            <v-list-item-avatar color="red">
                 <img :src="'http://localhost:1920/api/users/' + user._id + '/photo'" />
+            </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{user.name}}</v-list-item-title>
             </v-list-item-content>
@@ -23,7 +24,7 @@
               <v-btn icon>
                 <v-icon text fab light color="red">mdi-close-circle</v-icon>
               </v-btn>
-              <v-btn icon>
+              <v-btn icon @click="showUser(user._id)">
                 <v-icon text fab light>mdi-arrow-right</v-icon>
               </v-btn>
             </v-list-actions>
@@ -38,6 +39,12 @@
 
 <script>
 export default {
-  props: ["pending"]
+  props: ["pending"],
+
+  methods:{
+    showUser: function(id){
+        this.$router.push('users/' + id)
+      }
+  }
 };
 </script>

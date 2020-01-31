@@ -42,8 +42,8 @@
                           <v-list-item-subtitle>Admin</v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-actions>
-                          <v-btn icon>
-                            <v-icon text fab light>mdi-arrow-right</v-icon>
+                          <v-btn icon @click="showUser(m._id)">
+                            <v-icon text fab light >mdi-arrow-right</v-icon>
                           </v-btn>
                         </v-list-actions>
                       </v-list-item>
@@ -62,8 +62,8 @@
                           <v-btn icon v-if="isAdmin(g)">
                             <DeleteMember :gId="g._id" :uId="m._id" />
                           </v-btn>
-                          <v-btn icon>
-                            <v-icon text fab light>mdi-arrow-right</v-icon>
+                          <v-btn icon @click="showUser(m._id)">
+                            <v-icon text fab light >mdi-arrow-right</v-icon>
                           </v-btn>
                         </v-list-actions>
                       </v-list-item>
@@ -85,13 +85,13 @@
                         </v-list-item-content>
                         <v-list-actions>
                           <v-btn icon>
-                            <v-icon fab light color="green">mdi-check-circle</v-icon>
+                            <v-icon fab light color="green" @click="addMember(g._id,m._id)">mdi-check-circle</v-icon>
                           </v-btn>
                           <v-btn icon>
                             <v-icon text fab light color="red">mdi-close-circle</v-icon>
                           </v-btn>
                           <v-btn icon>
-                            <v-icon text fab light @click="addMember(g._id,m._id)">mdi-arrow-right</v-icon>
+                            <v-icon text fab light @click="showUser(m._id)">mdi-arrow-right</v-icon>
                           </v-btn>
                         </v-list-actions>
                       </v-list-item>
@@ -155,7 +155,10 @@ export default {
         });
 
       this.dialog = false;
-    }
+    },
+      showUser: function(id){
+          this.$router.push('users/' + id)
+      }
   }
 };
 </script>
